@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "81516595224",
+    "project_id": "team-hhouse",
+    "storage_bucket": "team-hhouse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81516595224:android:74b92097b5238250455b6d",
+        "android_client_info": {
+          "package_name": "com.iycreateapp.myhostel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCl96TK1x7BYu8H3r-hxPfYCCZKNFbxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
