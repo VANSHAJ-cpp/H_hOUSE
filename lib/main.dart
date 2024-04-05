@@ -84,7 +84,7 @@ Future<void> main() async {
         Provider<UserDataFirestoreService>(
           create: (_) => UserDataFirestoreService(),
         ),
-        Provider(create: (_) => OnboardingScreen()),
+        Provider(create: (_) => const OnboardingScreen()),
         Provider(create: (_) => SplashModel())
       ],
       child: const MyApp(),
@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: Colors.blue.shade900,
           elevation: 0.0,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           toolbarTextStyle:
               Theme.of(context).textTheme.bodyText2, // Use toolbarTextStyle
           titleTextStyle:

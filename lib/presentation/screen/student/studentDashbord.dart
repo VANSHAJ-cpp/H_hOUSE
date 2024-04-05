@@ -4,12 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hostelapplication/presentation/screen/student/leave/studentLeaveList.dart';
 import 'package:hostelapplication/presentation/screen/student/notice/StudentNoticeScreen.dart';
-import 'package:hostelapplication/presentation/screen/student/services/studentServices.dart';
 import 'package:hostelapplication/presentation/screen/student/complains/studentcomplainscreen.dart';
 import 'package:hostelapplication/presentation/screen/student/payment/studentPaymentSubmission.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
-  const StudentDashboardScreen({Key? key}) : super(key: key);
+  const StudentDashboardScreen({super.key});
 
   @override
   State<StudentDashboardScreen> createState() => _StudentDashboardScreenState();
@@ -74,7 +73,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     checkPaymentHistory(FirebaseAuth.instance.currentUser!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
@@ -88,7 +87,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     duration: const Duration(milliseconds: 400),
                     tabBackgroundColor: Colors.blue, // Changed to blue
-                    tabs: [
+                    tabs: const [
                       GButton(
                         icon: Icons.home_outlined,
                         text: 'Home',
@@ -127,7 +126,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    StudentPaymentSubmissionScreen()),
+                                    const StudentPaymentSubmissionScreen()),
                           );
                         }
                       }

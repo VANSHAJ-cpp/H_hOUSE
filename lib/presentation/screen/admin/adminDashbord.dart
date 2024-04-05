@@ -68,7 +68,7 @@ class _AdminDashbordScreenState extends State<AdminDashbordScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: Colors.blue,
-              tabs: [
+              tabs: const [
                 GButton(
                   icon: Icons.home_outlined,
                   text: 'Home',
