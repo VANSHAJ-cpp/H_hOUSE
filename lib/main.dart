@@ -84,7 +84,7 @@ Future<void> main() async {
         Provider<UserDataFirestoreService>(
           create: (_) => UserDataFirestoreService(),
         ),
-        Provider(create: (_) => const OnboardingScreen()),
+        Provider(create: (_) => OnboardingScreen()),
         Provider(create: (_) => SplashModel())
       ],
       child: const MyApp(),

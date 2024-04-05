@@ -524,10 +524,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                         child: const Text(
                                           'H HOUSE',
                                           style: TextStyle(
-                                            fontFamily: 'Brazila',
-                                            color: Colors.black,
-                                            fontSize: 24,
-                                          ),
+                                              fontFamily: 'Mazzard',
+                                              color: Colors.black,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
                                         ).animateOnPageLoad(animationsMap[
                                             'textOnPageLoadAnimation1']!),
                                       ),
@@ -546,7 +546,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                           Expanded(
                                             child: const Text('FIND \nPROBLEM',
                                                     style: TextStyle(
-                                                      fontFamily: 'Brazila',
+                                                      fontFamily: 'Mazzard',
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -565,11 +565,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                           children: [
                                             Expanded(
                                               child: const Text(
-                                                      'Find the problems yoy are facing in your hostel',
+                                                      'Find the problems you are facing in your hostel',
                                                       strutStyle: StrutStyle(
                                                           height: 1.2),
                                                       style: TextStyle(
-                                                        fontFamily: 'Brazila',
+                                                        fontFamily: 'Mazzard',
                                                         color: Colors.black,
                                                         wordSpacing: 1,
                                                         fontSize: 16,
@@ -595,9 +595,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                           Expanded(
                                               child: GestureDetector(
                                             onTap: () async {
-                                              // Navigator.pushNamed(
-                                              //     context, logInScreenRoute);
-
                                               await Navigator
                                                   .pushAndRemoveUntil(
                                                 context,
@@ -608,8 +605,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                   reverseDuration:
                                                       const Duration(
                                                           milliseconds: 300),
-                                                  child:
-                                                      const RegistrationScreen(),
+                                                  child: LogInScreen(),
                                                 ),
                                                 (r) => false,
                                               );
@@ -624,9 +620,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                               ),
                                               alignment: Alignment.center,
                                               child: const Text(
-                                                'Sign up',
+                                                'Login',
                                                 style: TextStyle(
-                                                  fontFamily: 'Brazila',
+                                                  fontFamily: 'Mazzard',
                                                   color: Colors.white,
                                                   fontSize: 19,
                                                   fontWeight: FontWeight.normal,
@@ -636,54 +632,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                 'buttonOnPageLoadAnimation1']!),
                                           )),
                                         ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 16, 0, 0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text('Already have account?',
-                                                style: TextStyle(
-                                                  fontFamily: 'Brazila',
-                                                  color: Colors.black,
-                                                )),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await Navigator
-                                                    .pushAndRemoveUntil(
-                                                  context,
-                                                  PageTransition(
-                                                    type:
-                                                        PageTransitionType.fade,
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                    reverseDuration:
-                                                        const Duration(
-                                                            milliseconds: 300),
-                                                    child: LogInScreen(),
-                                                  ),
-                                                  (r) => false,
-                                                );
-                                              },
-                                              child: const Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(4, 0, 0, 0),
-                                                child: Text('Log in',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brazila',
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        ).animateOnPageLoad(animationsMap[
-                                            'rowOnPageLoadAnimation1']!),
                                       ),
                                     ],
                                   ),
@@ -748,7 +696,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                         'POST YOUR COMPLAINTS',
                                                         style: TextStyle(
                                                             fontFamily:
-                                                                'Brazila',
+                                                                'Mazzard',
                                                             color: Colors.black,
                                                             fontSize: 42,
                                                             fontWeight:
@@ -768,13 +716,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                               children: [
                                                 Expanded(
                                                   child: const Text(
-                                                          'FiLog in to your account and upload the problem you are facing',
+                                                          'Log in to your account and upload the problem you are facing',
                                                           strutStyle:
                                                               StrutStyle(
                                                                   height: 1.2),
                                                           style: TextStyle(
                                                             fontFamily:
-                                                                'Brazila',
+                                                                'Mazzard',
                                                             color: Colors.black,
                                                             wordSpacing: 1,
                                                             fontSize: 16,
@@ -829,7 +777,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                 children: [
                                                   Text('',
                                                       style: TextStyle(
-                                                        fontFamily: 'Brazila',
+                                                        fontFamily: 'Mazzard',
                                                         color: Colors.black,
                                                       )),
                                                   Padding(
@@ -839,7 +787,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                                 4, 0, 0, 0),
                                                     child: Text('',
                                                         style: TextStyle(
-                                                          fontFamily: 'Brazila',
+                                                          fontFamily: 'Mazzard',
                                                           color: Colors.black,
                                                         )),
                                                   ),
@@ -897,7 +845,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                             child: const Text(
                                                     'BE SMART \nSOLVE PROBLEM',
                                                     style: TextStyle(
-                                                      fontFamily: 'Brazila',
+                                                      fontFamily: 'Mazzard',
                                                       color: Colors.black,
                                                       fontSize: 36,
                                                       fontWeight:
@@ -920,7 +868,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                       strutStyle: StrutStyle(
                                                           height: 1.2),
                                                       style: TextStyle(
-                                                        fontFamily: 'Brazila',
+                                                        fontFamily: 'Mazzard',
                                                         color: Colors.black,
                                                         wordSpacing: 1,
                                                         fontSize: 16,
@@ -973,7 +921,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                               child: const Text(
                                                 'Login',
                                                 style: TextStyle(
-                                                  fontFamily: 'Brazila',
+                                                  fontFamily: 'Mazzard',
                                                   color: Colors.white,
                                                   fontSize: 19,
                                                   fontWeight: FontWeight.normal,
@@ -983,56 +931,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                 'buttonOnPageLoadAnimation1']!),
                                           )),
                                         ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 16, 0, 0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text('Don\'t have account?',
-                                                style: TextStyle(
-                                                  fontFamily: 'Brazila',
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.normal,
-                                                )),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await Navigator
-                                                    .pushAndRemoveUntil(
-                                                  context,
-                                                  PageTransition(
-                                                    type:
-                                                        PageTransitionType.fade,
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                    reverseDuration:
-                                                        const Duration(
-                                                            milliseconds: 300),
-                                                    child:
-                                                        const RegistrationScreen(),
-                                                  ),
-                                                  (r) => false,
-                                                );
-                                              },
-                                              child: const Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(4, 0, 0, 0),
-                                                child: Text('Sign up',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Brazila',
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        ).animateOnPageLoad(animationsMap[
-                                            'rowOnPageLoadAnimation3']!),
                                       ),
                                     ],
                                   ),

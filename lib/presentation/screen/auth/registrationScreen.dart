@@ -315,41 +315,41 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        TextFormField(
-                          controller: passwordController,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: true,
-                          cursorColor: Colors.black,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Brazila",
-                          ),
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Password',
-                            hintStyle: const TextStyle(color: Colors.black),
-                            isDense: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                borderSide: BorderSide(color: colors)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                borderSide: BorderSide(color: colors)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                borderSide: BorderSide(color: colors)),
-                          ),
-                        ),
+                        // TextFormField(
+                        //   controller: passwordController,
+                        //   textInputAction: TextInputAction.done,
+                        //   keyboardType: TextInputType.visiblePassword,
+                        //   obscureText: true,
+                        //   cursorColor: Colors.black,
+                        //   style: TextStyle(
+                        //     color: Colors.black,
+                        //     fontFamily: "Brazila",
+                        //   ),
+                        //   decoration: InputDecoration(
+                        //     prefixIcon: Icon(
+                        //       Icons.remove_red_eye,
+                        //       color: Colors.black,
+                        //     ),
+                        //     hintText: 'Password',
+                        //     hintStyle: const TextStyle(color: Colors.black),
+                        //     isDense: true,
+                        //     border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.all(
+                        //           Radius.circular(10.0),
+                        //         ),
+                        //         borderSide: BorderSide(color: colors)),
+                        //     focusedBorder: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.all(
+                        //           Radius.circular(10.0),
+                        //         ),
+                        //         borderSide: BorderSide(color: colors)),
+                        //     enabledBorder: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.all(
+                        //           Radius.circular(10.0),
+                        //         ),
+                        //         borderSide: BorderSide(color: colors)),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -397,8 +397,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, logInScreenRoute);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text(
                                   'Already Registred?',
@@ -442,7 +441,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           emailController.text.toString(), passwordController.text.toString());
 
       Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, logInScreenRoute);
+      // Navigator.pushReplacementNamed(context, logInScreenRoute);
       return user;
     } catch (e) {
       return alertBox(context, e);

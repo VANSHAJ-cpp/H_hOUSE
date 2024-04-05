@@ -12,7 +12,20 @@
           "package_name": "com.iycreateapp.myhostel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "81516595224-k410kv93u87j85u2rtsa4l58tps10690.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iycreateapp.myhostel",
+            "certificate_hash": "74a9afb23814996605f7b82ae20769824eeb96ad"
+          }
+        },
+        {
+          "client_id": "81516595224-4p5gapm8mjl4vab28l2d6dj1835njk05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAFCl96TK1x7BYu8H3r-hxPfYCCZKNFbxM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81516595224-4p5gapm8mjl4vab28l2d6dj1835njk05.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "81516595224-5c90cjrshvv3m261ug6ha8kk22t5ak3m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.iycreateapp.myhostel"
+              }
+            }
+          ]
         }
       }
     }

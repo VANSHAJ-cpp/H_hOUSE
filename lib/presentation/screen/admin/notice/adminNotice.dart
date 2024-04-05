@@ -18,6 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
+import '../Booking/adminbooking.dart';
+
 class SliderImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -117,9 +119,25 @@ class _AdminHomeState extends State<AdminHome>
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.person_add),
+            onPressed: () {
+              Navigator.pushNamed(context, '/registrationScreenRoute');
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
               _showImageEditDialog(context, sliderImagesProvider);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons
+                .calendar_today), // Add the icon for redirecting to AdminBookingScreen
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminBookingScreen()),
+              );
             },
           ),
         ],

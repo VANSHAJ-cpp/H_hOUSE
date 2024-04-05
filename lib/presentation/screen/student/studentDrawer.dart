@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, deprecated_member_use
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,53 @@ import 'package:hostelapplication/core/constant/string.dart';
 import 'package:hostelapplication/logic/modules/userData_model.dart';
 import 'package:hostelapplication/logic/service/auth_services/auth_service.dart';
 import 'package:hostelapplication/presentation/screen/student/Drawer/mycomplaint.dart';
-import 'package:hostelapplication/presentation/screen/student/Drawer/myleave.dart';
-import 'package:hostelapplication/presentation/screen/student/Drawer/myservices.dart';
 import 'package:provider/provider.dart';
+
+import 'Van/van_timings.dart';
 
 class StudentDrawer extends StatelessWidget {
   const StudentDrawer({Key? key}) : super(key: key);
+
+  Future<List<Map<String, dynamic>>> _fetchBookings() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userUid = user.uid;
+        final vanTimingsQuery = await FirebaseFirestore.instance
+            .collection('VanTimings')
+            .where('uid', isEqualTo: userUid)
+            .get();
+
+        final List<Map<String, dynamic>> bookings = [];
+
+        for (var doc in vanTimingsQuery.docs) {
+          final pickupTime = doc['pickupTime'];
+          final dropTime = doc['dropTime'];
+
+          if (pickupTime is Timestamp && dropTime is Timestamp) {
+            bookings.add({
+              'date': (pickupTime as Timestamp).toDate(),
+              'PickUptime': pickupTime.toDate(),
+              'DropTime': dropTime.toDate(),
+              'location': doc['location'] as String,
+              'reason': doc['reason'] as String,
+              'docId': doc.id, // Added document ID to identify the booking
+            });
+          } else {
+            print(
+                'pickupTime and dropTime are not in Timestamp format. Skipping entry.');
+          }
+        }
+
+        return bookings;
+      } else {
+        throw Exception('User not signed in');
+      }
+    } catch (error) {
+      print('Error fetching bookings: $error');
+      throw error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +71,10 @@ class StudentDrawer extends StatelessWidget {
         return null;
       ;
     });
-    const studentDrawerText =
-        TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
+    const studentDrawerText = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+    );
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.8,
       child: SafeArea(
@@ -48,7 +92,7 @@ class StudentDrawer extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Row(
@@ -77,14 +121,14 @@ class StudentDrawer extends StatelessWidget {
                                     complaintList.first.firstName +
                                         ' ' +
                                         complaintList.first.lastName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
+                                  const Text(
                                     "View Profile",
                                     style: TextStyle(
                                         fontSize: 13,
@@ -109,12 +153,12 @@ class StudentDrawer extends StatelessWidget {
                       children: [
                         Icon(
                           FontAwesomeIcons.book,
-                          color: Colors.blue.shade900,
+                          color: const Color.fromARGB(255, 0, 0, 0),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
-                        Text(
+                        const Text(
                           'My Complaints',
                           style: studentDrawerText,
                         ),
@@ -128,63 +172,65 @@ class StudentDrawer extends StatelessWidget {
                     },
                   ),
                   const SizedBox(width: 50, child: Divider()),
-                  ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          CupertinoIcons.person_crop_circle_badge_minus,
-                          color: Colors.blue.shade900,
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Text(
-                          'My Leaves',
-                          style: studentDrawerText,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyLeave()));
-                    },
-                  ),
-                  const SizedBox(width: 50, child: Divider()),
-                  ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          CupertinoIcons.wrench,
-                          color: Colors.blue.shade900,
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Text(
-                          'My Services',
-                          style: studentDrawerText,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Myservicesrequest()));
-                    },
-                  ),
+                  // ListTile(
+                  //   title: Row(
+                  //     children: [
+                  //       Icon(
+                  //         CupertinoIcons.person_crop_circle_badge_minus,
+                  //         color: Colors.blue.shade900,
+                  //       ),
+                  //       const SizedBox(
+                  //         width: 30,
+                  //       ),
+                  //       const Text(
+                  //         'My Leaves',
+                  //         style: studentDrawerText,
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => const MyLeave()));
+                  //   },
+                  // ),
+                  // const SizedBox(width: 50, child: Divider()),
+                  // ListTile(
+                  //   title: Row(
+                  //     children: [
+                  //       Icon(
+                  //         CupertinoIcons.wrench,
+                  //         color: Colors.blue.shade900,
+                  //       ),
+                  //       const SizedBox(
+                  //         width: 30,
+                  //       ),
+                  //       const Text(
+                  //         'My Services',
+                  //         style: studentDrawerText,
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => const Myservicesrequest()));
+                  //   },
+                  // ),
                   const SizedBox(width: 50, child: Divider()),
                   ListTile(
                     title: Row(
                       children: [
                         Icon(
                           FontAwesomeIcons.question,
-                          color: Colors.blue.shade900,
+                          color: const Color.fromARGB(255, 0, 0, 0),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
-                        Text(
+                        const Text(
                           'Help',
                           style: studentDrawerText,
                         ),
@@ -194,18 +240,71 @@ class StudentDrawer extends StatelessWidget {
                       Navigator.pushNamed(context, helpscreenRoute);
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
                     title: Row(
                       children: [
                         Icon(
-                          FontAwesomeIcons.signOut,
-                          color: Colors.blue.shade900,
+                          FontAwesomeIcons.car,
+                          color: const Color.fromARGB(255, 0, 0, 0),
                         ),
                         SizedBox(
                           width: 30,
                         ),
                         Text(
+                          'Book Van Timings',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    onTap: () async {
+                      try {
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user != null) {
+                          final userUid = user.uid;
+                          final bookings = await _fetchBookings();
+                          if (bookings.isEmpty) {
+                            // No booking history, navigate to VanTimingsScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VanTimingsScreen()),
+                            );
+                          } else {
+                            // Booking history exists, navigate to BookingTableScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookingTableScreen(
+                                  userUid: userUid,
+                                  bookings: bookings,
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          throw Exception('User not signed in');
+                        }
+                      } catch (error) {
+                        print('Error: $error');
+                        // Handle error here
+                      }
+                    },
+                  ),
+
+                  const SizedBox(width: 50, child: Divider()),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.signOut,
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        const Text(
                           'Log out',
                           style: studentDrawerText,
                         ),

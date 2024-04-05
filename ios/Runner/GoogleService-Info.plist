@@ -2,18 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>81516595224-5c90cjrshvv3m261ug6ha8kk22t5ak3m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.81516595224-5c90cjrshvv3m261ug6ha8kk22t5ak3m</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>81516595224-k410kv93u87j85u2rtsa4l58tps10690.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCCxorEp4Xn3xMKaG89018vjqCvOvZ7nPM</string>
+	<string>AIzaSyAzugpjG4d-adpYUwOeWitBYaA4vBXj-oo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>12928930905</string>
+	<string>81516595224</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.iycreateapp.myhostel</string>
 	<key>PROJECT_ID</key>
-	<string>hostell-e60c3</string>
+	<string>team-hhouse</string>
 	<key>STORAGE_BUCKET</key>
-	<string>hostell-e60c3.appspot.com</string>
+	<string>team-hhouse.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:12928930905:ios:f9f5241a36dfdf0f80cd48</string>
+	<string>1:81516595224:ios:f433b4fdc74f7fb0455b6d</string>
 </dict>
 </plist>

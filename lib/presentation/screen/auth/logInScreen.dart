@@ -1,11 +1,12 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hostelapplication/core/constant/string.dart';
 import 'package:hostelapplication/core/constant/textController.dart';
-import 'package:hostelapplication/logic/service/auth_services/auth_service.dart';
-import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LogInScreen extends StatefulWidget {
   @override
@@ -13,279 +14,382 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-  late AuthService authService;
-  bool showLoading = false;
-  bool showAlert = false;
-
-  final _formkey = GlobalKey<FormState>();
-  final colors = Color(0xff96C3E2);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   bool showPassword = true;
+
   @override
   Widget build(BuildContext context) {
-    authService = Provider.of<AuthService>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Form(
-          key: _formkey,
-          child: Stack(
-            children: [
-              Positioned(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: Colors.grey[200], // Updated background color
+      body: WillPopScope(
+        onWillPop: () async {
+          // Navigate to onboarding screen when back button is pressed
+          Navigator.pushReplacementNamed(context, onboardingScreen);
+          return true;
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo1.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'H House',
+                    style: GoogleFonts.breeSerif(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Welcomes You',
+                    style: GoogleFonts.breeSerif(
+                      fontSize: 30,
+                      color: Colors.blueAccent,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 169, 0, 0),
+                      ),
                       children: [
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        Image.asset(
-                          'assets/images/logo1.png',
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'My\nHostel',
+                        TextSpan(text: 'Student should do '),
+                        TextSpan(
+                          text: 'Google SignIn',
                           style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35,
-                              fontFamily: 'Brazila'),
-                        ),
-                        Text(
-                          'WELCOME.',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: colors,
-                              fontFamily: "Brazila",
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 50,
-                          child: TextFormField(
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                            cursorColor: Colors.black,
-                            style: const TextStyle(
-                                color: Colors.black, fontFamily: 'Brazila'),
-                            decoration: InputDecoration(
-                              hintText: 'Email',
-                              hintStyle: const TextStyle(color: Colors.black),
-                              isDense: true,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(color: colors)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(color: colors)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(color: colors)),
-                            ),
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 50,
-                          child: TextFormField(
-                            controller: passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: showPassword ? true : false,
-                            textInputAction: TextInputAction.done,
-                            cursorColor: Colors.black,
-                            style: const TextStyle(
-                                color: Colors.black, fontFamily: 'Brazila'),
-                            decoration: InputDecoration(
-                              isDense: true,
-                              hintStyle: const TextStyle(color: Colors.black),
-                              hintText: 'Password',
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showPassword = !showPassword;
-                                  });
-                                },
-                                child: Icon(
-                                  showPassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(color: colors)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(color: colors)),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Center(
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 80, vertical: 10),
-                                  decoration: BoxDecoration(
-                                      color: colors,
-                                      border: Border.all(
-                                        color: colors,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Brazila"),
-                                  ),
-                                ),
-                                onTap: () async {
-                                  setState(() {
-                                    showLoading = true;
-                                  });
-
-                                  progressIndicater(
-                                      context, showLoading = true);
-                                  await loginByRole();
-                                  await showAlert == true
-                                      ? null
-                                      : progressIndicater(
-                                          context, showLoading = true);
-                                  emailController.clear();
-                                  passwordController.clear();
-                                  Navigator.pop(context);
-                                  //  Navigator.pushNamed(
-                                  //     context, adminDashbordScreenRoute);
-                                },
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  emailController.clear();
-                                  passwordController.clear();
-                                  Navigator.pushNamed(
-                                      context, registrationScreenRoute);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Not Registred yet?',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: 'Brazila',
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    const Text(
-                                      'Sign Up',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: 'Brazila',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              )
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      onPressed: _signInWithGoogle,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white, // Updated button color
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 24.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset('assets/images/google_logo.svg',
+                              width: 20, height: 20),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      prefixIcon: Icon(Icons.email, color: Colors.grey[400]),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 2.0,
+                        ), // Updated border color and width
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16.0), // Added padding
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: showPassword,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      prefixIcon: Icon(Icons.lock, color: Colors.grey[400]),
+                      suffixIcon: IconButton(
+                        icon: Icon(showPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 2.0,
+                        ), // Updated border color and width
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16.0), // Added padding
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Check if email and password match the credentials
+                      if (emailController.text == 'admin@gmail.com' &&
+                          passwordController.text == 'admin@1234') {
+                        // Navigate to admin dashboard
+                        Navigator.pushReplacementNamed(
+                            context, '/adminDashbordScreenRoute');
+                      } else {
+                        // Show alert for invalid credentials
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Invalid Credentials'),
+                            content:
+                                Text('Please enter valid email and password.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const Text(
+                    'Discover the best hostel services with H House.',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future<dynamic>? progressIndicater(BuildContext context, showLoading) {
-    if (showLoading == true) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    } else
-      return null;
-  }
-
-  loginByRole() async {
+  Future<void> _signInWithGoogle() async {
     try {
-      await authService.signInWithEmailAndPassword(
-          emailController.text.toString(), passwordController.text.toString());
-      if (emailController.text.toString() == 'admin@gmail.com') {
-        Navigator.pushNamedAndRemoveUntil(
-            context, adminDashbordScreenRoute, (route) => false);
-      } else {
-        Navigator.pushNamedAndRemoveUntil(
-            context, studentDashboardScreenRoute, (route) => false);
+      await googleSignIn.signOut();
+
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        // Get the user's email from Google sign-in
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+        final userEmail = googleUser?.email;
+
+        // Check if the email exists in Firestore
+        final bool emailExistsInFirestore =
+            await checkEmailExistsInFirestore(userEmail);
+
+        if (emailExistsInFirestore) {
+          // Proceed with sign-in
+          final UserCredential userCredential =
+              await _auth.signInWithCredential(credential);
+          final User? user = userCredential.user;
+          if (user != null) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              studentDashboardScreenRoute,
+              (route) => false,
+            );
+          }
+        } else {
+          // Email not registered, sign out and show alert
+          await googleSignIn.signOut();
+          alertBox(context,
+              'Please contact the house owner to register your email.');
+        }
       }
-    } catch (e) {
-      return alertBox(context, e);
+    } catch (error) {
+      print(error.toString());
+      alertBox(context, 'An error occurred. Please try again later.');
     }
   }
 
-  Future<void> alertBox(BuildContext context, e) {
-    setState(() {
-      showLoading = false;
-      showAlert = true;
-    });
+  Future<bool> checkEmailExistsInFirestore(String? email) async {
+    // Check if the email exists in Firestore
+    try {
+      if (email != null) {
+        final userSnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .where('Email', isEqualTo: email)
+            .get();
+        return userSnapshot.docs.isNotEmpty;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print(error.toString());
+      return false;
+    }
+  }
+
+  Future<bool> checkUserExists(String? email) async {
+    // Assuming you are using Firestore as your database
+    try {
+      if (email != null) {
+        final userSnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .where('Email', isEqualTo: email)
+            .get();
+        return userSnapshot.docs.isNotEmpty;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print(error.toString());
+      return false;
+    }
+  }
+
+  Future<void> alertBox(BuildContext context, String message) {
     return Alert(
       context: context,
-      title: "ALERT",
-      desc: e.toString(),
+      title: "",
+      content: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "ALERT",
+              style: TextStyle(
+                fontFamily: 'Mazzard',
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              message,
+              style: TextStyle(
+                fontFamily: 'Mazzard',
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontFamily: 'Mazzard',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      closeFunction: () => Navigator.pop(context),
+      style: AlertStyle(
+        backgroundColor: Colors.transparent,
+        overlayColor: Colors.black.withOpacity(0.5),
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+      ),
     ).show();
   }
 }
