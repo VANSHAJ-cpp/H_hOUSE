@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:hostelapplication/presentation/screen/student/leave/studentLeaveList.dart';
+import 'package:hostelapplication/presentation/screen/student/Menu%20Display/Menu.dart';
 import 'package:hostelapplication/presentation/screen/student/notice/StudentNoticeScreen.dart';
 import 'package:hostelapplication/presentation/screen/student/complains/studentcomplainscreen.dart';
 import 'package:hostelapplication/presentation/screen/student/payment/studentPaymentSubmission.dart';
@@ -19,7 +19,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   final List<Widget> _widgetOptions = <Widget>[
     const StudentHome(),
     const StudentComplainScreen(),
-    const StudentApproveDennyLeaveList(),
+    const FoodMenuScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -98,8 +98,8 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                         text: 'Report',
                       ),
                       GButton(
-                        icon: Icons.person_outline,
-                        text: 'Leave',
+                        icon: Icons.food_bank,
+                        text: 'Food',
                       ),
                       GButton(
                         icon: Icons.payment_outlined, // Payment icon

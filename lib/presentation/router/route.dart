@@ -9,7 +9,7 @@ import 'package:hostelapplication/presentation/screen/auth/registrationScreen.da
 import 'package:hostelapplication/presentation/screen/onBordingScreen.dart';
 import 'package:hostelapplication/presentation/screen/splashScreen.dart';
 import 'package:hostelapplication/presentation/screen/student/Drawer/helpscreen.dart';
-import 'package:hostelapplication/presentation/screen/student/leave/studentAddLeave.dart';
+import 'package:hostelapplication/presentation/screen/student/Menu%20Display/studentAddLeave.dart';
 import 'package:hostelapplication/presentation/screen/student/services/bathroomService.dart';
 import 'package:hostelapplication/presentation/screen/student/services/messService.dart';
 import 'package:hostelapplication/presentation/screen/student/services/otherServices.dart';
@@ -62,32 +62,29 @@ class Routes {
       case studentElectricityServiceRoute:
         return MaterialPageRoute(
             builder: (context) => const StudentElectricityServices());
-      
-       case studentRoomServiceRoute:
+
+      case studentRoomServiceRoute:
         return MaterialPageRoute(
             builder: (context) => const StudentRoomServices());
-      
-       case studentMessServiceRoute:
+
+      case studentMessServiceRoute:
         return MaterialPageRoute(
             builder: (context) => const StudentMessServices());
-      
-         case studentBathRoomServiceRoute:
+
+      case studentBathRoomServiceRoute:
         return MaterialPageRoute(
             builder: (context) => const StudentBathroomServices());
-        
-         case studentOtherServiceRoute:
+
+      case studentOtherServiceRoute:
         return MaterialPageRoute(
             builder: (context) => const StudentOtherServices());
-
-
 
       case adminDetailsScreenRoute:
         return MaterialPageRoute(
             builder: (context) => const AdminDetailsScreen());
 
-      case studentLeaveScreenRoute:
-        return MaterialPageRoute(builder: (context) => const StudentAddLeave());
-
+      // case studentLeaveScreenRoute:
+      //   return MaterialPageRoute(builder: (context) => const StudentAddLeave());
 
       default:
         return MaterialPageRoute(

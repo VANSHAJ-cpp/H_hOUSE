@@ -48,7 +48,11 @@ class _StudentComplainScreenState extends State<StudentComplainScreen>
         backgroundColor: Colors.black,
         title: const Text(
           'Complain',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Mazzard',
+              fontSize: 22),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -63,7 +67,7 @@ class _StudentComplainScreenState extends State<StudentComplainScreen>
         backgroundColor: Colors.black,
         child: const Icon(Icons.comment),
       ),
-      drawer: const StudentDrawer(),
+      // drawer: const StudentDrawer(),
       body: ListView.builder(
         itemCount: images.length,
         itemBuilder: (BuildContext context, int index) {

@@ -69,6 +69,8 @@ dependencies:
   lottie: ^3.1.0
   flutter_time_picker_spinner: ^2.0.0
   flutter_dropdown: ^1.0.1+hotfix.1
+  image_crop: ^0.4.1
+  dropdown_search: ^5.0.6
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -87,6 +89,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/food/
     - assets/onboard/
   
   fonts:

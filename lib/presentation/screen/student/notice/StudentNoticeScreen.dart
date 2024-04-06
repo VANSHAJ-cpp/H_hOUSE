@@ -239,8 +239,8 @@ class _StudentHomeState extends State<StudentHome> {
           'DashBoard',
           style: TextStyle(
             color: Colors.white,
-            fontFamily: "Brazila",
-            fontSize: 20,
+            fontFamily: "Mazzard",
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -12,6 +12,14 @@ class MenuScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
+          bodyText2: TextStyle(fontSize: 14.0, color: Colors.black54),
+          headline1: TextStyle(
+              fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.blue),
+          headline2: TextStyle(
+              fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.blue),
+        ),
       ),
       home: MenuScreenPage(),
     );
@@ -23,26 +31,32 @@ class MenuScreenPage extends StatefulWidget {
   _MenuScreenPageState createState() => _MenuScreenPageState();
 }
 
-class _MenuScreenPageState extends State<MenuScreenPage> {
+class _MenuScreenPageState extends State<MenuScreenPage>
+    with SingleTickerProviderStateMixin {
   late String selectedDay;
+  late ScrollController _scrollController;
+  late AnimationController _animationController;
 
   TextEditingController breakfastController = TextEditingController();
   TextEditingController lunchController = TextEditingController();
   TextEditingController snacksController = TextEditingController();
   TextEditingController dinnerController = TextEditingController();
 
-  late ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
     selectedDay = _getCurrentDay();
     _scrollController = ScrollController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -56,12 +70,12 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hostel Food Menu'),
+        title: const Text('Hostel Food Menu'),
         centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -80,7 +94,7 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: DropdownButton<String>(
                 value: selectedDay,
                 onChanged: (String? newValue) {
@@ -101,7 +115,7 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
                     value: value,
                     child: Text(
                       value,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -127,7 +141,7 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -143,7 +157,18 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
           return _buildEditList();
         }
 
-        return _buildMenuTable(data);
+        _animationController.forward(); // Start animation
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          child: _buildMenuItems(data),
+        );
       },
     );
   }
@@ -152,138 +177,128 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildEditableList("Breakfast", breakfastController),
-        _buildEditableList("Lunch", lunchController),
-        _buildEditableList("Snacks", snacksController),
-        _buildEditableList("Dinner", dinnerController),
+        _buildExpandableMenu("Breakfast", breakfastController),
+        _buildExpandableMenu("Lunch", lunchController),
+        _buildExpandableMenu("Snacks", snacksController),
+        _buildExpandableMenu("Dinner", dinnerController),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
               _saveMenu();
             },
-            child: Text('Save Menu'),
+            child: const Text('Save Menu'),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildEditableList(String title, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: controller,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'Enter items separated by comma',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
-        ],
+  Widget _buildExpandableMenu(String title, TextEditingController controller) {
+    return ExpansionTile(
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            controller: controller,
+            maxLines: null,
+            decoration: const InputDecoration(
+              hintText: 'Enter items separated by comma',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildMenuTable(Map<String, dynamic> data) {
+  Widget _buildMenuItems(Map<String, dynamic> data) {
     List<String> breakfast = List.from(data['breakfast'] ?? []);
     List<String> lunch = List.from(data['lunch'] ?? []);
     List<String> snacks = List.from(data['snacks'] ?? []);
     List<String> dinner = List.from(data['dinner'] ?? []);
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Card(
-        elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(
-                'Menu for $selectedDay',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            _buildMealCard("Breakfast", breakfast),
-            _buildMealCard("Lunch", lunch),
-            _buildMealCard("Snacks", snacks),
-            _buildMealCard("Dinner", dinner),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMealCard(String title, List<String> items) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
+            'Menu for $selectedDay',
+            style: const TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.blue,
             ),
           ),
-          SizedBox(height: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: items
-                .map((item) => Text(
-                      item,
-                      style: TextStyle(fontSize: 16),
-                    ))
-                .toList(),
-          ),
+          const SizedBox(height: 20),
+          _buildMenuItem("Breakfast", breakfast),
+          const SizedBox(height: 20),
+          _buildMenuItem("Lunch", lunch),
+          const SizedBox(height: 20),
+          _buildMenuItem("Snacks", snacks),
+          const SizedBox(height: 20),
+          _buildMenuItem("Dinner", dinner),
         ],
       ),
+    );
+  }
+
+  Widget _buildMenuItem(String title, List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headline2,
+        ),
+        const SizedBox(height: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: items
+              .map((item) => FadeTransition(
+                    opacity:
+                        _animationController.drive(Tween(begin: 0.0, end: 1.0)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        item,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      ],
     );
   }
 
   Widget _buildEditModalBottomSheet() {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildEditableList("Breakfast", breakfastController),
-            _buildEditableList("Lunch", lunchController),
-            _buildEditableList("Snacks", snacksController),
-            _buildEditableList("Dinner", dinnerController),
-            SizedBox(height: 10),
+            _buildExpandableMenu("Breakfast", breakfastController),
+            _buildExpandableMenu("Lunch", lunchController),
+            _buildExpandableMenu("Snacks", snacksController),
+            _buildExpandableMenu("Dinner", dinnerController),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 _saveMenu();
                 Navigator.pop(context); // Close the bottom sheet
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),

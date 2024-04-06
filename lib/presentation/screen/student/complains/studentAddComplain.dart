@@ -70,7 +70,11 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
           backgroundColor: Colors.black,
           title: const Text(
             "Add Complaint",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Mazzard',
+                fontSize: 22),
           ),
         ),
         body: Form(
