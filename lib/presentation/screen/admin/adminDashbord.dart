@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hostelapplication/presentation/screen/admin/adminPaymentCheckScreen.dart';
-import 'package:hostelapplication/presentation/screen/admin/leave/AdminLeave.dart';
+import 'package:hostelapplication/presentation/screen/admin/leave/Menu_Screen.dart';
 import 'package:hostelapplication/presentation/screen/admin/service/AdminServices.dart';
 import 'package:hostelapplication/presentation/screen/admin/complaint/AdmincomplaintScreen.dart';
 import 'package:hostelapplication/presentation/screen/admin/notice/adminNotice.dart';

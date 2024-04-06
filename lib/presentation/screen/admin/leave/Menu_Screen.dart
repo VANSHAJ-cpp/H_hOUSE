@@ -33,19 +33,16 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
 
   late ScrollController _scrollController = ScrollController();
 
-  // Track whether the dialog is open
-  bool isDialogOpen = false;
-
   @override
   void initState() {
     super.initState();
     selectedDay = _getCurrentDay();
-    _scrollController = ScrollController(); // Initialize ScrollController
+    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose ScrollController
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -66,21 +63,14 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              // Check if the dialog is already open
-              if (!isDialogOpen) {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    isDialogOpen = true;
-                    return _buildEditDialog();
-                  },
-                ).then((value) {
-                  // Set the dialog flag to false when dialog is closed
-                  isDialogOpen = false;
-                  // Refresh the menu when the dialog is closed
-                  setState(() {});
-                });
-              }
+              showModalBottomSheet(
+                context: context,
+                builder: (_) {
+                  return _buildEditModalBottomSheet();
+                },
+              ).then((value) {
+                setState(() {});
+              });
             },
           ),
         ],
@@ -183,9 +173,7 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
-        // Wrap with ListView
-        shrinkWrap:
-            true, // Use shrinkWrap to wrap the ListView tightly around its children
+        shrinkWrap: true,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,41 +266,28 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
     );
   }
 
-  Widget _buildEditDialog() {
-    return AlertDialog(
-      title: Text('Edit Menu'),
-      content: Scrollbar(
-        controller: _scrollController,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildEditableList("Breakfast", breakfastController),
-              _buildEditableList("Lunch", lunchController),
-              _buildEditableList("Snacks", snacksController),
-              _buildEditableList("Dinner", dinnerController),
-            ],
-          ),
+  Widget _buildEditModalBottomSheet() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildEditableList("Breakfast", breakfastController),
+            _buildEditableList("Lunch", lunchController),
+            _buildEditableList("Snacks", snacksController),
+            _buildEditableList("Dinner", dinnerController),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                _saveMenu();
+                Navigator.pop(context); // Close the bottom sheet
+              },
+              child: Text('Save'),
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            // Close the dialog
-            Navigator.pop(context);
-          },
-          child: Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            _saveMenu();
-          },
-          child: Text('Save'),
-        ),
-      ],
     );
   }
 
@@ -326,8 +301,5 @@ class _MenuScreenPageState extends State<MenuScreenPage> {
       'snacks': snacksController.text.split(','),
       'dinner': dinnerController.text.split(','),
     });
-
-    // Close the dialog
-    Navigator.pop(context);
   }
 }
