@@ -23,14 +23,14 @@ class _SplashScreen1State extends State<SplashScreen1> {
     super.initState();
     checkUserType();
     Timer(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (BuildContext context) => loginNum == 1
-              ? AdminDashbordScreen()
+              ? const AdminDashbordScreen()
               : loginNum == 2
-                  ? StudentDashboardScreen()
-                  : OnboardingScreen(),
+                  ? const StudentDashboardScreen()
+                  : const OnboardingScreen(),
         ),
       ),
     );
@@ -78,10 +78,10 @@ class _SplashScreen1State extends State<SplashScreen1> {
               height: 250,
               width: 250,
             ),
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
-            CircularProgressIndicator(),
+            const CircularProgressIndicator(),
           ],
         ),
       ),

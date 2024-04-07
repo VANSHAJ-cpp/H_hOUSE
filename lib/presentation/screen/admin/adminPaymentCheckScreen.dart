@@ -6,7 +6,7 @@ class AdminPaymentCheckScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Payment Check'),
+        title: const Text('Admin Payment Check'),
       ),
       body: PaymentList(),
     );
@@ -20,7 +20,7 @@ class PaymentList extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('User').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -30,7 +30,7 @@ class PaymentList extends StatelessWidget {
           );
         }
         if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
-          return Center(
+          return const Center(
             child: Text('No user details available.'),
           );
         }
@@ -49,7 +49,7 @@ class PaymentList extends StatelessWidget {
 class PaymentItem extends StatelessWidget {
   final QueryDocumentSnapshot<Object?> user;
 
-  const PaymentItem({Key? key, required this.user}) : super(key: key);
+  const PaymentItem({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class PaymentItem extends StatelessWidget {
       ),
       title: Text(
         fullName,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
@@ -74,14 +74,14 @@ class PaymentItem extends StatelessWidget {
         children: [
           Text(
             'Room No: $roomNo',
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blue,
             ),
           ),
           Text(
             'Email: $email',
-            style: TextStyle(
+            style: const TextStyle(
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -103,14 +103,13 @@ class PaymentItem extends StatelessWidget {
 class PaymentHistoryScreen extends StatelessWidget {
   final String userId;
 
-  const PaymentHistoryScreen({Key? key, required this.userId})
-      : super(key: key);
+  const PaymentHistoryScreen({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment History'),
+        title: const Text('Payment History'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -121,7 +120,7 @@ class PaymentHistoryScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -131,7 +130,7 @@ class PaymentHistoryScreen extends StatelessWidget {
             );
           }
           if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No payment history available.'),
             );
           }
@@ -147,7 +146,7 @@ class PaymentHistoryScreen extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Payment Details'),
+                        title: const Text('Payment Details'),
                         content: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +165,7 @@ class PaymentHistoryScreen extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Close'),
+                            child: const Text('Close'),
                           ),
                         ],
                       );

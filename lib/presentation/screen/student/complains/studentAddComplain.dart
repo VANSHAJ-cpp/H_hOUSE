@@ -12,8 +12,7 @@ class StudentAddComplaintScreen extends StatefulWidget {
   final String studentId;
 
   const StudentAddComplaintScreen(this.complainTitle, this.studentId,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   @override
   _StudentAddComplaintScreenState createState() =>

@@ -11,7 +11,7 @@ import 'package:hostelapplication/logic/service/auth_services/auth_service.dart'
 import 'package:provider/provider.dart';
 
 class StudentDetailScreen extends StatefulWidget {
-  const StudentDetailScreen({Key? key}) : super(key: key);
+  const StudentDetailScreen({super.key});
 
   @override
   State<StudentDetailScreen> createState() => _StudentDetailScreenState();
@@ -34,7 +34,6 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
       if (user.uid == element.id) {
         userDataList.add(element);
       }
-      ;
     });
 
     return Scaffold(
@@ -67,8 +66,8 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                     });
                     Navigator.pop(context);
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 28.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 28.0),
                     child: Center(
                         child: Text("Save", style: TextStyle(fontSize: 17))),
                   ))
@@ -130,7 +129,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                             userDataList.first.firstName +
                                 ' ' +
                                 userDataList.first.lastName,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 29, fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -152,7 +151,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                             ),
                             child: DataTable(
                               columns: [
-                                DataColumn(
+                                const DataColumn(
                                   label: Text(
                                     'Room No',
                                     style: TextStyle(
@@ -168,7 +167,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                               ],
                               rows: [
                                 DataRow(cells: [
-                                  DataCell(
+                                  const DataCell(
                                     Text(
                                       'Email',
                                       style: TextStyle(
@@ -180,7 +179,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                                   ),
                                 ]),
                                 DataRow(cells: [
-                                  DataCell(
+                                  const DataCell(
                                     Text(
                                       'Phone No',
                                       style: TextStyle(
@@ -193,7 +192,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                                 ]),
                                 DataRow(
                                   cells: [
-                                    DataCell(
+                                    const DataCell(
                                       Text(
                                         'Date of joining',
                                         style: TextStyle(
@@ -245,7 +244,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           });

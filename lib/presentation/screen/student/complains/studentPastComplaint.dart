@@ -5,8 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class StudentPastComplaintsScreen extends StatefulWidget {
   final String userUid;
 
-  const StudentPastComplaintsScreen({Key? key, required this.userUid})
-      : super(key: key);
+  const StudentPastComplaintsScreen({super.key, required this.userUid});
 
   @override
   _StudentPastComplaintsScreenState createState() =>

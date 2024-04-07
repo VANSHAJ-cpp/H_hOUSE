@@ -4,7 +4,7 @@ import 'package:hostelapplication/presentation/screen/student/services/StudentPa
 import 'package:hostelapplication/presentation/screen/student/studentDrawer.dart';
 
 class StudentServicesScreen extends StatefulWidget {
-  const StudentServicesScreen({Key? key}) : super(key: key);
+  const StudentServicesScreen({super.key});
 
   @override
   State<StudentServicesScreen> createState() => _StudentServicesScreenState();

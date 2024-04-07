@@ -10,7 +10,7 @@ import 'package:hostelapplication/logic/provider/service_provider.dart';
 import 'package:hostelapplication/logic/service/auth_services/auth_service.dart';
 
 class StudentElectricityServices extends StatefulWidget {
-  const StudentElectricityServices({Key? key}) : super(key: key);
+  const StudentElectricityServices({super.key});
 
   @override
   State<StudentElectricityServices> createState() =>
@@ -42,11 +42,11 @@ class _StudentElectricityServicesState
       ),
       body: SingleChildScrollView(
         child: userData == null
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -104,32 +104,32 @@ class _StudentElectricityServicesState
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Service ",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(":"),
+                                  const Text(":"),
                                   Row(
                                     children: [
                                       Text(
                                         isLightChecked ? 'Light,' : '',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             color: Colors.red,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         isFanChecked ? 'Fan,' : '',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             color: Colors.red,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         isPlugChecked ? 'Plug,' : '',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             color: Colors.red,
                                             fontWeight: FontWeight.bold),

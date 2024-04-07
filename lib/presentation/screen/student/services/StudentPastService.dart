@@ -7,7 +7,7 @@ import 'package:hostelapplication/logic/service/auth_services/auth_service.dart'
 import 'package:provider/provider.dart';
 
 class StudentPastServiceScreen extends StatelessWidget {
-  StudentPastServiceScreen({Key? key}) : super(key: key);
+  const StudentPastServiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +32,17 @@ class StudentPastServiceScreen extends StatelessWidget {
           serviceList.length != 0 ? Colors.grey[200] : Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
-        title: Text('Past Service'),
+        title: const Text('Past Service'),
       ),
       body: serviceList.length != 0
           ? Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: ListView.builder(
                 itemCount: serviceList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -53,7 +53,7 @@ class StudentPastServiceScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     serviceList[index].name,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 20,
                                     ),
@@ -68,14 +68,14 @@ class StudentPastServiceScreen extends StatelessWidget {
                                             .toString() +
                                         '/' +
                                         serviceList[index].time.year.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                   ),
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
                               serviceList[index].status == 0
-                                  ? Text(
+                                  ? const Text(
                                       'Pending',
                                       style: TextStyle(
                                         color: Color.fromARGB(
@@ -87,27 +87,27 @@ class StudentPastServiceScreen extends StatelessWidget {
                                       ),
                                     )
                                   : serviceList[index].status == 1
-                                      ? Text('Approved',
+                                      ? const Text('Approved',
                                           style: TextStyle(color: Colors.green))
-                                      : Text(
+                                      : const Text(
                                           'Declined',
                                           style: TextStyle(
                                             color: Colors.red,
                                           ),
                                         ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Divider(),
+                          const Divider(),
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(
+                              color: const Color.fromARGB(
                                 87,
                                 238,
                                 238,
@@ -144,7 +144,7 @@ class StudentPastServiceScreen extends StatelessWidget {
                     height: 250,
                     width: 250,
                   ),
-                  Text(
+                  const Text(
                     'No Complaints :)',
                     style: TextStyle(
                         fontSize: 25,

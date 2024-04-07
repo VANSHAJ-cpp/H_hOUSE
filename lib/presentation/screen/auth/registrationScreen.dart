@@ -30,7 +30,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-  final colors = Color(0xff96C3E2);
+  final colors = const Color(0xff96C3E2);
   @override
   Widget build(BuildContext context) {
     authService = Provider.of<AuthService>(context);
@@ -49,7 +49,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -102,12 +102,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               return null;
                             },
                             cursorColor: Colors.black,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontFamily: "Brazila",
                             ),
                             decoration: InputDecoration(
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.person_rounded,
                                 color: Colors.black,
                               ),
@@ -118,17 +118,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               isDense: true,
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
@@ -152,13 +152,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               return null;
                             },
                             cursorColor: Colors.black,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontFamily: "Brazila",
                             ),
                             controller: lastNameController,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.person_rounded,
                                 color: Colors.black,
                               ),
@@ -166,17 +166,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               isDense: true,
                               hintText: "Last Name",
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   ),
                                   borderSide: BorderSide(color: colors)),
@@ -199,12 +199,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           },
                           controller: mobileNoController,
                           cursorColor: Colors.black,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontFamily: "Brazila",
                           ),
                           decoration: InputDecoration(
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.phone,
                               color: Colors.black,
                             ),
@@ -212,17 +212,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             isDense: true,
                             hintText: 'Mobile No.',
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
@@ -244,12 +244,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           },
                           controller: roomNoController,
                           cursorColor: Colors.black,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontFamily: "Brazila",
                           ),
                           decoration: InputDecoration(
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.home_outlined,
                               color: Colors.black,
                             ),
@@ -257,17 +257,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintStyle: const TextStyle(color: Colors.black),
                             isDense: true,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
@@ -283,12 +283,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           cursorColor: Colors.black,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontFamily: "Brazila",
                           ),
                           decoration: InputDecoration(
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.email_outlined,
                               color: Colors.black,
                             ),
@@ -296,17 +296,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintStyle: const TextStyle(color: Colors.black),
                             isDense: true,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                                 borderSide: BorderSide(color: colors)),
@@ -427,7 +427,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           });
@@ -455,9 +455,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
     return Alert(
       context: context,
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       title: "ALERT",
-      style: AlertStyle(
+      style: const AlertStyle(
         descTextAlign: TextAlign.center,
       ),
       desc: e.toString(),

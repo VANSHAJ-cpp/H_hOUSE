@@ -7,7 +7,7 @@ import 'package:hostelapplication/logic/service/auth_services/auth_service.dart'
 import 'package:provider/provider.dart';
 
 class AdminDrawer extends StatelessWidget {
-  const AdminDrawer({Key? key}) : super(key: key);
+  const AdminDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class AdminDrawer extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Row(
@@ -30,12 +30,12 @@ class AdminDrawer extends StatelessWidget {
                         CircleAvatar(
                           radius: 25,
                           backgroundColor: Colors.blue.shade900,
-                          child: Icon(Icons.account_circle_rounded),
+                          child: const Icon(Icons.account_circle_rounded),
                         ),
                         const SizedBox(
                           width: 15,
                         ),
-                        Text(
+                        const Text(
                           "Admin",
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
@@ -57,10 +57,10 @@ class AdminDrawer extends StatelessWidget {
                     FontAwesomeIcons.question,
                     color: Colors.blue.shade900,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
-                  Text(
+                  const Text(
                     'Help',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   )
@@ -78,10 +78,10 @@ class AdminDrawer extends StatelessWidget {
                     FontAwesomeIcons.signOut,
                     color: Colors.blue.shade900,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
-                  Text(
+                  const Text(
                     'Log out',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   )

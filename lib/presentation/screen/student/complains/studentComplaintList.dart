@@ -20,14 +20,13 @@ class StudentComplaintListScreen extends StatelessWidget {
           (element.status == 1 || element.status == 2)) {
         complaintList.add(element);
       }
-      ;
     });
 
     return Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
             backgroundColor: Colors.blue.shade900,
-            title: Text(
+            title: const Text(
               'My Complaint',
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -40,7 +39,7 @@ class StudentComplaintListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Card(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -50,7 +49,7 @@ class StudentComplaintListScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(complaintList[index].complaintTitle,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 17)),
                                     Text(
@@ -65,40 +64,40 @@ class StudentComplaintListScreen extends StatelessWidget {
                                               .time
                                               .year
                                               .toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12, color: Colors.grey),
                                     ),
                                   ],
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 complaintList[index].status == 1
-                                    ? Text(
+                                    ? const Text(
                                         'Approved',
                                         style: TextStyle(
                                           color: Colors.green,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       )
-                                    : Text(
+                                    : const Text(
                                         'Declined',
                                         style: TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                               ],
                             ),
-                            Divider(height: 2),
-                            SizedBox(
+                            const Divider(height: 2),
+                            const SizedBox(
                               height: 10,
                             ),
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(
+                                color: const Color.fromARGB(
                                   87,
                                   238,
                                   238,
@@ -126,6 +125,6 @@ class StudentComplaintListScreen extends StatelessWidget {
                   },
                 ),
               )
-            : Center(child: CircularProgressIndicator()));
+            : const Center(child: CircularProgressIndicator()));
   }
 }

@@ -200,15 +200,15 @@ class _LogInScreenState extends State<LogInScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Invalid Credentials'),
-                              content: Text(
+                              title: const Text('Invalid Credentials'),
+                              content: const Text(
                                   'Please enter valid email and password.'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                 ),
                               ],
                             ),
@@ -344,7 +344,7 @@ class _LogInScreenState extends State<LogInScreen> {
       context: context,
       title: "",
       content: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -352,7 +352,7 @@ class _LogInScreenState extends State<LogInScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "ALERT",
               style: TextStyle(
                 fontFamily: 'Mazzard',
@@ -361,16 +361,16 @@ class _LogInScreenState extends State<LogInScreen> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Mazzard',
                 fontSize: 18,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -381,9 +381,8 @@ class _LogInScreenState extends State<LogInScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 child: Text(
                   'OK',
                   style: TextStyle(

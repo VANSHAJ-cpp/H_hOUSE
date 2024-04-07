@@ -171,7 +171,7 @@ class _FoodMenuScreenState extends State<FoodMenuScreen> {
                           ),
                         ],
                         border: Border.all(
-                          color: Color.fromARGB(255, 79, 78, 78),
+                          color: const Color.fromARGB(255, 79, 78, 78),
                           width: 3, // adjust border width as needed
                         ),
                       ),
@@ -236,7 +236,7 @@ class CustomFoodCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Colors.black87, Colors.black],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

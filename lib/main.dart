@@ -84,7 +84,7 @@ Future<void> main() async {
         Provider<UserDataFirestoreService>(
           create: (_) => UserDataFirestoreService(),
         ),
-        Provider(create: (_) => OnboardingScreen()),
+        Provider(create: (_) => const OnboardingScreen()),
         Provider(create: (_) => SplashModel())
       ],
       child: const MyApp(),
@@ -100,16 +100,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.blue.shade900,
-        fontFamily: "Brazila",
+        fontFamily: "Mazzard",
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
           color: Colors.blue.shade900,
           elevation: 0.0,
           iconTheme: const IconThemeData(color: Colors.white),
           toolbarTextStyle:
-              Theme.of(context).textTheme.bodyText2, // Use toolbarTextStyle
+              Theme.of(context).textTheme.bodyMedium, // Use toolbarTextStyle
           titleTextStyle:
-              Theme.of(context).textTheme.headline6, // Use titleTextStyle
+              Theme.of(context).textTheme.titleLarge, // Use titleTextStyle
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.blue.shade900,

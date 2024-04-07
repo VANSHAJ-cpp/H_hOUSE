@@ -375,8 +375,7 @@ class _StudentHomeState extends State<StudentHome> {
 }
 
 class NoticeContainer extends StatelessWidget {
-  const NoticeContainer(this.notice, this.date, this.src, {Key? key})
-      : super(key: key);
+  const NoticeContainer(this.notice, this.date, this.src, {super.key});
 
   final String notice;
   final String date;
@@ -560,7 +559,7 @@ class NoticeContainer extends StatelessWidget {
 }
 
 class BulletLists extends StatelessWidget {
-  const BulletLists(this.str);
+  const BulletLists(this.str, {super.key});
   final String str;
   @override
   Widget build(BuildContext context) {
