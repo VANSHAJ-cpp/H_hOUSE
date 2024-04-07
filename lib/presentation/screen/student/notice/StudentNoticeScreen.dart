@@ -12,6 +12,7 @@ import 'package:hostelapplication/presentation/screen/student/studentDrawer.dart
 import 'package:image_downloader/image_downloader.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({Key? key}) : super(key: key);
@@ -41,7 +42,10 @@ class _StudentHomeState extends State<StudentHome> {
     });
 
     // Start autoplay when the widget is initialized
-    startAutoplay();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Call startAutoplay after the PageView is built
+      startAutoplay();
+    });
   }
 
   Future<List<String>> fetchSliderImages() async {
@@ -52,138 +56,155 @@ class _StudentHomeState extends State<StudentHome> {
     return sliderImages;
   }
 
-  void _showNotificationPopup(BuildContext context) {
+  Future<void> _showNotificationPopup(BuildContext context) async {
     TextEditingController reviewController = TextEditingController();
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasAddedReview = prefs.getBool('hasAddedReview') ?? false;
+    if (!hasAddedReview) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: 5,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 10, 10, 10),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'H House Reviews & Feedback',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 24,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        '4.9/5',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Reviews:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildReviewTile(
+                    Icons.star,
+                    'Great hostel! Highly recommended.',
+                  ),
+                  _buildReviewTile(
+                    Icons.star,
+                    'Clean rooms and friendly staff.',
+                  ),
+                  _buildReviewTile(
+                    Icons.star,
+                    'Good amenities and convenient location.',
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Add Your Review:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextField(
+                    controller: reviewController,
+                    decoration: const InputDecoration(
+                      hintText: 'Write your review...',
+                      border: OutlineInputBorder(),
+                    ),
+                    minLines: 1,
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () async {
+                      String newReview = reviewController.text.trim();
+                      if (newReview.isNotEmpty) {
+                        print('New Review: $newReview');
+                        // Save information that the user has added a review
+                        prefs.setBool('hasAddedReview', true);
+                        // Show success message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Review added successfully!'),
+                          ),
+                        );
+                        // Clear review text field
+                        reviewController.clear();
+                        // Close the modal bottom sheet
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter a review.'),
+                          ),
+                        );
+                      }
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                    child: const Text(
+                      'Add Review',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mazzard'),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  height: 5,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'H House Reviews & Feedback',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                      size: 24,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      '4.9/5',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Reviews:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                _buildReviewTile(
-                  Icons.star,
-                  'Great hostel! Highly recommended.',
-                ),
-                _buildReviewTile(
-                  Icons.star,
-                  'Clean rooms and friendly staff.',
-                ),
-                _buildReviewTile(
-                  Icons.star,
-                  'Good amenities and convenient location.',
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Add Your Review:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                TextField(
-                  controller: reviewController,
-                  decoration: InputDecoration(
-                    hintText: 'Write your review...',
-                    border: OutlineInputBorder(),
-                  ),
-                  minLines: 3,
-                  maxLines: 5,
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    String newReview = reviewController.text.trim();
-                    if (newReview.isNotEmpty) {
-                      print('New Review: $newReview');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Review added successfully!'),
-                        ),
-                      );
-                      reviewController.clear();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please enter a review.'),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text('Add Review'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
   }
 
   Widget _buildReviewTile(IconData icon, String review) {
@@ -196,11 +217,11 @@ class _StudentHomeState extends State<StudentHome> {
             color: Colors.amber,
             size: 20,
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               review,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black,
               ),
@@ -215,7 +236,7 @@ class _StudentHomeState extends State<StudentHome> {
     // Autoplay feature
     Future.delayed(const Duration(seconds: 3), () {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 800),
         curve: Curves.ease,
       );
     });
@@ -224,6 +245,7 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   void dispose() {
     _pageController.dispose();
+
     super.dispose();
   }
 
@@ -246,7 +268,7 @@ class _StudentHomeState extends State<StudentHome> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.rate_review),
+            icon: const Icon(Icons.rate_review),
             onPressed: () {
               _showNotificationPopup(context);
             },
@@ -261,7 +283,7 @@ class _StudentHomeState extends State<StudentHome> {
             future: _sliderImagesFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
 
               if (snapshot.hasError) {
@@ -298,7 +320,7 @@ class _StudentHomeState extends State<StudentHome> {
               );
             },
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: noticeList != null
                 ? GroupedListView<Notice, String>(
@@ -457,7 +479,7 @@ class NoticeContainer extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 notice,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -469,7 +491,7 @@ class NoticeContainer extends StatelessWidget {
               future: _getImageSize(src),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 double? imageHeight = snapshot.data as double?;
                 return imageHeight != null && imageHeight > 300
@@ -489,10 +511,10 @@ class NoticeContainer extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -526,7 +548,7 @@ class NoticeContainer extends StatelessWidget {
   Future<double> _getImageSize(String imageUrl) async {
     Completer<double> completer = Completer<double>();
     Image image = Image.network(imageUrl);
-    image.image.resolve(ImageConfiguration()).addListener(
+    image.image.resolve(const ImageConfiguration()).addListener(
       ImageStreamListener(
         (ImageInfo info, bool _) {
           completer.complete(info.image.height.toDouble());
@@ -563,7 +585,7 @@ class BulletLists extends StatelessWidget {
                 "${str}",
                 textAlign: TextAlign.left,
                 softWrap: true,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                   height: 1.55,

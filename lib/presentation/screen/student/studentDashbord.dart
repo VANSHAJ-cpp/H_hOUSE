@@ -89,6 +89,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     tabBackgroundColor: Colors.blue, // Changed to blue
                     tabs: const [
                       GButton(
+                        // hoverColor: Colors.amberAccent,
+                        // shadow: [
+                        //   BoxShadow(blurRadius: BorderSide.strokeAlignCenter)
+                        // ],
                         icon: Icons.home_outlined,
                         text: 'Home',
                       ),

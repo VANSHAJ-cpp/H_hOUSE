@@ -156,16 +156,32 @@ class _FoodMenuScreenState extends State<FoodMenuScreen> {
               crossAxisCount: 3,
               children: List.generate(6, (index) {
                 return Container(
-                  width: 100,
-                  height: 100,
-                  padding: const EdgeInsets.all(8),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/food/${index + 1}.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
+                    width: 100,
+                    height: 100,
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: Color.fromARGB(255, 79, 78, 78),
+                          width: 3, // adjust border width as needed
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/food/${index + 1}.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ));
               }),
             ),
             const SizedBox(height: 20),
@@ -197,34 +213,8 @@ class _FoodMenuScreenState extends State<FoodMenuScreen> {
                 .map(
                   (item) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color.fromARGB(255, 75, 74, 74)
-                                .withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      constraints: const BoxConstraints(minHeight: 50),
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          item,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Mazzard',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
+                    child: CustomFoodCard(
+                      itemName: item,
                     ),
                   ),
                 )
@@ -232,6 +222,48 @@ class _FoodMenuScreenState extends State<FoodMenuScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CustomFoodCard extends StatelessWidget {
+  final String itemName;
+
+  const CustomFoodCard({Key? key, required this.itemName}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.black87, Colors.black],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          itemName,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Mazzard',
+            fontSize: 16,
+          ),
+        ),
+      ),
     );
   }
 }
