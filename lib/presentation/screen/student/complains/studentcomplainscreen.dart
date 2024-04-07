@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hostelapplication/presentation/screen/student/complains/StudentPastComplaint.dart';
 import 'package:hostelapplication/presentation/screen/student/complains/studentAddComplain.dart';
+import 'package:hostelapplication/presentation/screen/student/complains/studentPastComplaint.dart';
 import 'package:hostelapplication/presentation/screen/student/studentDrawer.dart';
 
 class StudentComplainScreen extends StatefulWidget {
@@ -56,17 +57,25 @@ class _StudentComplainScreenState extends State<StudentComplainScreen>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => StudentPastComplaintScreen(),
-            ),
-          );
+        onPressed: () async {
+          String? userUid = FirebaseAuth.instance.currentUser?.uid;
+          if (userUid != null && userUid.isNotEmpty) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentPastComplaintsScreen(
+                  userUid: userUid,
+                ),
+              ),
+            );
+          } else {
+            // Handle error, user not logged in
+          }
         },
         backgroundColor: Colors.black,
         child: const Icon(Icons.comment),
       ),
+
       // drawer: const StudentDrawer(),
       body: ListView.builder(
         itemCount: images.length,

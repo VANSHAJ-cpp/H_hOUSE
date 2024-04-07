@@ -8,7 +8,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hostelapplication/core/constant/string.dart';
 import 'package:hostelapplication/logic/modules/userData_model.dart';
 import 'package:hostelapplication/logic/service/auth_services/auth_service.dart';
+import 'package:hostelapplication/presentation/screen/admin/leave/Menu_Screen.dart';
 import 'package:hostelapplication/presentation/screen/student/Drawer/mycomplaint.dart';
+import 'package:hostelapplication/presentation/screen/student/Menu%20Display/Menu.dart';
+import 'package:hostelapplication/presentation/screen/student/complains/studentPastComplaint.dart';
 import 'package:provider/provider.dart';
 
 import 'Van/van_timings.dart';
@@ -164,14 +167,23 @@ class StudentDrawer extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      String? userUid = FirebaseAuth.instance.currentUser?.uid;
+                      if (userUid != null && userUid.isNotEmpty) {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Mycomplaints()));
+                            builder: (context) => StudentPastComplaintsScreen(
+                              userUid: userUid,
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Handle error, user not logged in
+                      }
                     },
                   ),
-                  const SizedBox(width: 50, child: Divider()),
+                  // const SizedBox(width: 50, child: Divider()),
                   // ListTile(
                   //   title: Row(
                   //     children: [
@@ -219,27 +231,8 @@ class StudentDrawer extends StatelessWidget {
                   //             builder: (context) => const Myservicesrequest()));
                   //   },
                   // ),
-                  const SizedBox(width: 50, child: Divider()),
-                  ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.question,
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                        const Text(
-                          'Help',
-                          style: studentDrawerText,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, helpscreenRoute);
-                    },
-                  ),
+                  // const SizedBox(width: 50, c.hild: Divider()),
+
                   const Divider(),
                   ListTile(
                     title: Row(
@@ -292,7 +285,30 @@ class StudentDrawer extends StatelessWidget {
                       }
                     },
                   ),
-
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(
+                          Icons.food_bank,
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        const Text(
+                          'Check Menu',
+                          style: studentDrawerText,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FoodMenuScreen()),
+                      );
+                    },
+                  ),
                   const SizedBox(width: 50, child: Divider()),
                   ListTile(
                     title: Row(

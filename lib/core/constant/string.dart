@@ -32,7 +32,7 @@ const String studentBathRoomServiceRoute = "/studentBathRoomServiceScreen";
 const String studentOtherServiceRoute = "/studentOtherServiceScreen";
 
 //drawer
-const String helpscreenRoute = "/help";
+const String helpscreenRoute = "/MenuScreen";
 
 //****************End-Routes***********************
 

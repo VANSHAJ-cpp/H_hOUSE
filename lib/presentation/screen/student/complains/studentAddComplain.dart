@@ -85,7 +85,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
               future: _getUserData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else {
                   if (snapshot.hasData) {
                     final userData = snapshot.data!;
@@ -98,8 +98,8 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
                         child: Text(
                           'Complaint Details',
                           style: TextStyle(
@@ -115,19 +115,19 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                             children: [
                               Text(
                                 'Name: $_userName',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 10),
                               Text(
                                 'Room No.: $_roomNo',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 10),
                               Text(
                                 'Date: ${DateTime.now().toString().split(' ')[0]}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -135,8 +135,8 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           'Complaint Type',
                           style: TextStyle(
@@ -145,7 +145,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                       ),
                       // Dropdown for complaint type
                       DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Select Type',
                           border: OutlineInputBorder(),
                         ),
@@ -169,8 +169,8 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           'Complaint Description',
                           style: TextStyle(
@@ -180,7 +180,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                       // Multiline text field for complaint description
                       TextFormField(
                         onChanged: (value) => _complaintDescription = value,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Type your complaint here...',
                           border: OutlineInputBorder(),
                         ),
@@ -194,14 +194,14 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                         children: [
                           ElevatedButton.icon(
                             onPressed: () => _getImage(ImageSource.camera),
-                            icon: Icon(Icons.camera_alt),
-                            label: Text('Take Photo'),
+                            icon: const Icon(Icons.camera_alt),
+                            label: const Text('Take Photo'),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           ElevatedButton.icon(
                             onPressed: () => _getImage(ImageSource.gallery),
-                            icon: Icon(Icons.image),
-                            label: Text(' Gallery'),
+                            icon: const Icon(Icons.image),
+                            label: const Text(' Gallery'),
                           ),
                         ],
                       ),
@@ -209,7 +209,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                       // Display selected image
                       _image != null
                           ? Image.file(_image!)
-                          : SizedBox(), // Show nothing if no image is selected
+                          : const SizedBox(), // Show nothing if no image is selected
                       const SizedBox(height: 20),
                       // Button to submit complaint
                       // Button to submit complaint
@@ -222,7 +222,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                               context: context,
                               barrierDismissible: false,
                               builder: (BuildContext context) {
-                                return Center(
+                                return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               },
@@ -269,24 +269,24 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
 
                             // Show SnackBar
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Complaint added successfully!'),
                                 duration: Duration(seconds: 2),
                               ),
                             );
 
                             // Navigate back to complaint screen after a delay
-                            Future.delayed(Duration(seconds: 2), () {
+                            Future.delayed(const Duration(seconds: 2), () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        StudentComplainScreen()),
+                                        const StudentComplainScreen()),
                               );
                             });
                           }
                         },
-                        child: Text('Submit Complaint'),
+                        child: const Text('Submit Complaint'),
                       ),
                     ],
                   );

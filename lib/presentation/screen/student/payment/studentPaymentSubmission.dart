@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StudentPaymentSubmissionScreen extends StatefulWidget {
-  const StudentPaymentSubmissionScreen({Key? key}) : super(key: key);
+  const StudentPaymentSubmissionScreen({super.key});
 
   @override
   _StudentPaymentSubmissionScreenState createState() =>
@@ -19,9 +21,17 @@ class _StudentPaymentSubmissionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Payment Submission'),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black,
+      //   title: const Text(
+      //     'Payment Submission',
+      //     style: TextStyle(
+      //         color: Colors.white,
+      //         fontWeight: FontWeight.bold,
+      //         fontFamily: 'Mazzard',
+      //         fontSize: 22),
+      //   ),
+      // ),
       body: PaymentForm(),
     );
   }
@@ -36,9 +46,10 @@ class _PaymentFormState extends State<PaymentForm> {
   File? _image;
   final picker = ImagePicker();
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _studentIDController = TextEditingController();
-  TextEditingController _transactionDetailsController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _studentIDController = TextEditingController();
+  final TextEditingController _transactionDetailsController =
+      TextEditingController();
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -56,7 +67,15 @@ class _PaymentFormState extends State<PaymentForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Submit Payment'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Submit Payment',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Mazzard',
+              fontSize: 22),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -74,7 +93,7 @@ class _PaymentFormState extends State<PaymentForm> {
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                     )
                   : Container(
                       height: 200,
@@ -82,56 +101,82 @@ class _PaymentFormState extends State<PaymentForm> {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child: const Icon(
                         Icons.attach_file,
                         size: 80,
-                        color: Colors.grey[400],
+                        color: Color.fromARGB(255, 57, 0, 0),
                       ),
-                      margin: EdgeInsets.only(bottom: 20),
                     ),
               ElevatedButton.icon(
                 onPressed: getImage,
-                icon: Icon(Icons.attach_file),
-                label: Text('Attach Screenshot'),
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.black)),
+                icon: const Icon(
+                  Icons.attach_file,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'Attach Screenshot',
+                  style: TextStyle(fontFamily: 'Mazzard', color: Colors.white),
+                ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _studentIDController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Student ID',
                   prefixIcon: Icon(Icons.format_list_numbered),
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _transactionDetailsController,
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Transaction Details',
                   prefixIcon: Icon(Icons.description),
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  // Check if any field is empty
+                  if (_nameController.text.isEmpty ||
+                      _studentIDController.text.isEmpty ||
+                      _transactionDetailsController.text.isEmpty ||
+                      _image == null) {
+                    // Show snackbar with red background and white text
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(
+                          'Please fill in all fields and attach a screenshot.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                    return; // Exit function if any field is empty
+                  }
+
                   // Show CircularProgressIndicator
                   showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     },
@@ -145,15 +190,17 @@ class _PaymentFormState extends State<PaymentForm> {
 
                   // Upload image to Firebase Storage
                   String imageUrl = '';
-                  if (_image != null) {
-                    firebase_storage.Reference ref = firebase_storage
-                        .FirebaseStorage.instance
+                  firebase_storage.Reference ref;
+                  try {
+                    ref = firebase_storage.FirebaseStorage.instance
                         .ref()
                         .child('payment_images')
                         .child(
                             DateTime.now().millisecondsSinceEpoch.toString());
                     await ref.putFile(_image!);
                     imageUrl = await ref.getDownloadURL();
+                  } catch (e) {
+                    print('Error uploading image: $e');
                   }
 
                   // Save payment details to Firestore under the current user's UID
@@ -175,7 +222,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
                   // Show success message
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Payment details submitted successfully!'),
                     ),
                   );
@@ -195,7 +242,17 @@ class _PaymentFormState extends State<PaymentForm> {
                         builder: (context) => PaymentHistoryScreen()),
                   );
                 },
-                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Set button color to black
+                ),
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Mazzard',
+                  ),
+                ),
               ),
             ],
           ),
@@ -210,7 +267,15 @@ class PaymentHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment History'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Payment History',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Mazzard',
+              fontSize: 22),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -221,7 +286,7 @@ class PaymentHistoryScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -231,7 +296,7 @@ class PaymentHistoryScreen extends StatelessWidget {
             );
           }
           if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No payment history available.'),
             );
           }
@@ -251,7 +316,7 @@ class PaymentHistoryScreen extends StatelessWidget {
                           brightness: Brightness.dark,
                         ),
                         child: AlertDialog(
-                          title: Text(
+                          title: const Text(
                             'Payment Details',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -261,15 +326,15 @@ class PaymentHistoryScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   'Name: ${payment['name']}',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 Text(
                                   'Student ID: ${payment['studentID']}',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 Text(
                                   'Transaction Details: ${payment['transactionDetails']}',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 if (payment['imageUrl'] != null)
                                   Image.network(payment['imageUrl']),
@@ -282,7 +347,7 @@ class PaymentHistoryScreen extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Close',
+                              child: const Text('Close',
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],
@@ -297,13 +362,17 @@ class PaymentHistoryScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PaymentForm()),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
