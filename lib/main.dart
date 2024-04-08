@@ -100,16 +100,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.blue.shade900,
-        fontFamily: "Mazzard",
+        fontFamily: "Brazila",
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
           color: Colors.blue.shade900,
           elevation: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Colors.white),
           toolbarTextStyle:
-              Theme.of(context).textTheme.bodyMedium, // Use toolbarTextStyle
+              Theme.of(context).textTheme.bodyText2, // Use toolbarTextStyle
           titleTextStyle:
-              Theme.of(context).textTheme.titleLarge, // Use titleTextStyle
+              Theme.of(context).textTheme.headline6, // Use titleTextStyle
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.blue.shade900,

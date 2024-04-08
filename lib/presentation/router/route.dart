@@ -31,7 +31,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => SplashScreen1());
 
       case onboardingScreen:
-        return MaterialPageRoute(builder: (context) => OnboardingScreen());
+        return MaterialPageRoute(
+            builder: (context) => const OnboardingScreen());
 
       case logInScreenRoute:
         return MaterialPageRoute(builder: (context) => LogInScreen());
