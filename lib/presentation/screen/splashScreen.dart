@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hostelapplication/presentation/screen/admin/adminDashbord.dart';
 import 'package:hostelapplication/presentation/screen/student/studentDashbord.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'onBordingScreen.dart';
 
@@ -36,33 +37,44 @@ class _SplashScreen1State extends State<SplashScreen1> {
     );
   }
 
-  checkUserType() {
-    var auth = FirebaseAuth.instance;
-    auth.authStateChanges().listen((user) {
-      if (user != null) {
-        user = auth.currentUser;
-        emailAddress = user!.email;
-        if (emailAddress == 'admin@gmail.com') {
-          if (this.mounted) {
-            setState(() {
-              loginNum = 1;
-            });
+  checkUserType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isAdminLoggedIn = prefs.getBool('isAdminLoggedIn') ?? false;
+
+    if (isAdminLoggedIn) {
+      setState(() {
+        loginNum = 1; // Admin user is already logged in
+      });
+    } else {
+      var auth = FirebaseAuth.instance;
+      auth.authStateChanges().listen((user) {
+        if (user != null) {
+          user = auth.currentUser;
+          emailAddress = user!.email;
+          if (emailAddress == 'admin@gmail.com') {
+            if (this.mounted) {
+              setState(() {
+                loginNum = 1; // Set loginNum to 1 for admin user
+              });
+              // Save admin login state to shared preferences
+              prefs.setBool('isAdminLoggedIn', true);
+            }
+          } else {
+            if (this.mounted) {
+              setState(() {
+                loginNum = 2; // Set loginNum to 2 for student user
+              });
+            }
           }
         } else {
           if (this.mounted) {
             setState(() {
-              loginNum = 2;
+              loginNum = 3; // Set loginNum to 3 for guest user
             });
           }
         }
-      } else {
-        if (this.mounted) {
-          setState(() {
-            loginNum = 3;
-          });
-        }
-      }
-    });
+      });
+    }
   }
 
   @override

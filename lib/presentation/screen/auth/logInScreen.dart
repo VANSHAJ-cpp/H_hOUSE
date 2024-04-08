@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
   @override
@@ -188,11 +189,14 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Check if email and password match the credentials
                         if (emailController.text == 'admin@gmail.com' &&
                             passwordController.text == 'admin@1234') {
                           // Navigate to admin dashboard
+                          final prefs = await SharedPreferences.getInstance();
+                          prefs.setBool('isAdminLoggedIn', true);
+
                           Navigator.pushReplacementNamed(
                               context, '/adminDashbordScreenRoute');
                         } else {
