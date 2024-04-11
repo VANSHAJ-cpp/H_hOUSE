@@ -31,7 +31,7 @@ class SliderImagesWidget extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
         // Extract image URLs from snapshot
@@ -65,7 +65,7 @@ class SliderImagesWidget extends StatelessWidget {
           return Container(
             height: 200,
             color: Colors.grey.withOpacity(0.5),
-            child: Center(
+            child: const Center(
               child: Text('No images available'),
             ),
           );
@@ -93,13 +93,15 @@ class _AdminHomeState extends State<AdminHome>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     _animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     );
     _controller.forward();
+
+    deleteDuplicateImages();
   }
 
   @override
@@ -151,9 +153,17 @@ class _AdminHomeState extends State<AdminHome>
                 ? GroupedListView<Notice, String>(
                     elements: [...noticeList],
                     groupBy: (element) {
-                      final formattedDate =
-                          DateFormat('dd MMMM yyyy').format(element.time);
+                      final formattedDate = DateFormat('yyyy-MM-dd')
+                          .format(element.time); // Format as yyyy-MM-dd
                       return formattedDate;
+                    },
+                    groupComparator: (group1, group2) {
+                      // Sort groups in descending order based on date
+                      return group2.compareTo(group1);
+                    },
+                    itemComparator: (item1, item2) {
+                      // Sort items in descending order based on full date
+                      return item2.time.compareTo(item1.time);
                     },
                     groupSeparatorBuilder: (String value) => Padding(
                       padding: const EdgeInsets.only(top: 8.0, left: 8),
@@ -173,13 +183,12 @@ class _AdminHomeState extends State<AdminHome>
                         ],
                       ),
                     ),
-                    order: GroupedListOrder.DESC,
                     itemBuilder: (c, element) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: NoticeContainer(
                           element.notice,
-                          '${element.time.day}/${element.time.month}/${element.time.year}',
+                          DateFormat('dd MMMM yyyy').format(element.time),
                           element.url!,
                           () {
                             showDialog(
@@ -228,8 +237,8 @@ class _AdminHomeState extends State<AdminHome>
           onPressed: () {
             Navigator.pushNamed(context, addNoticeScreenRoute);
           },
-          icon: Icon(Icons.add),
-          label: Text('Add Notice'),
+          icon: const Icon(Icons.add),
+          label: const Text('Add Notice'),
         ),
       ),
       drawer: const AdminDrawer(),
@@ -241,35 +250,41 @@ class _AdminHomeState extends State<AdminHome>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.white, // Set background color
-        title: Text("Edit Slider Images",
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold)), // Set title style
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Edit Slider Images",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               // Add Image
               ListTile(
-                title: Text("Add Image",
-                    style: TextStyle(color: Colors.black)), // Set text color
+                title: const Text(
+                  "Add Image",
+                  style: TextStyle(color: Colors.black),
+                ),
                 onTap: () {
                   _addImage(context, sliderImagesProvider);
                   Navigator.of(context).pop(); // Dismiss dialog after action
                 },
               ),
-              if (sliderImagesProvider.sliderImages.length >
-                  1) // Check if more than one image
-                // Delete Image
-                ListTile(
-                  title: Text("Delete Image",
-                      style: TextStyle(color: Colors.red)), // Set text color
-                  onTap: () {
-                    _deleteImage(context, sliderImagesProvider);
-                    Navigator.of(context).pop(); // Dismiss dialog after action
-                  },
+              // if (sliderImagesProvider.sliderImages
+              //     .isNotEmpty) // Only show delete option if there are images
+              ListTile(
+                title: const Text(
+                  "Delete Image",
+                  style: TextStyle(color: Colors.red),
                 ),
+                onTap: () {
+                  _deleteImage(context);
+                  Navigator.of(context).pop(); // Dismiss dialog after action
+                },
+              ),
             ],
           ),
         ),
@@ -281,60 +296,241 @@ class _AdminHomeState extends State<AdminHome>
       BuildContext context, SliderImagesProvider sliderImagesProvider) async {
     final picker = ImagePicker();
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
-      // Upload image to Firebase Storage
       Reference ref = FirebaseStorage.instance
           .ref()
           .child('slider_images')
-          .child(pickedFile.path);
+          .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
+
       UploadTask uploadTask = ref.putFile(File(pickedFile.path));
 
-      // Get download URL
-      String imageUrl = await (await uploadTask).ref.getDownloadURL();
+      try {
+        TaskSnapshot taskSnapshot = await uploadTask;
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('slider_images').add({
-        'url': imageUrl,
-      });
-      // Add the image URL to Firestore
-      sliderImagesProvider.addImage(imageUrl);
+        // Fetch all existing image URLs from Firestore
+        QuerySnapshot querySnapshot =
+            await FirebaseFirestore.instance.collection('slider_images').get();
+
+        // List to hold existing image URLs
+        List<String> existingUrls =
+            querySnapshot.docs.map((doc) => doc['url'] as String).toList();
+
+        // Flag to track if the new image URL is a duplicate
+        bool isDuplicate = false;
+
+        // Compare the new image URL with existing URLs
+        for (String existingUrl in existingUrls) {
+          if (existingUrl == imageUrl) {
+            isDuplicate = true;
+            break;
+          }
+        }
+
+        // If the new image URL is not a duplicate, add it to Firestore
+        if (!isDuplicate) {
+          await FirebaseFirestore.instance.collection('slider_images').add({
+            'url': imageUrl,
+          });
+
+          sliderImagesProvider.addImage(imageUrl);
+        } else {
+          print('Image URL already exists in Firestore');
+        }
+      } catch (error) {
+        print('Error uploading image: $error');
+        // Handle error uploading image
+      }
     } else {
       // User canceled the image picker
     }
   }
 
-  void _deleteImage(
-      BuildContext context, SliderImagesProvider sliderImagesProvider) {
-    // Show a dialog to select which image to delete
+  void _deleteImage(BuildContext context) async {
+    // Fetch the list of image URLs from Firestore
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('slider_images').get();
+
+    // Initialize a set to track selected image URLs
+    Set<String> selectedImages = {};
+
+    // Show a dialog to select images for deletion
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Select Image to Delete"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ...sliderImagesProvider.sliderImages.map((imagePath) {
-              return ListTile(
-                title: Text(imagePath),
-                onTap: () {
-                  // Delete the selected image
-                  int index =
-                      sliderImagesProvider.sliderImages.indexOf(imagePath);
-                  sliderImagesProvider.deleteImage(index);
-
-                  if (_currentImageIndex >=
-                      sliderImagesProvider.sliderImages.length) {
-                    _currentImageIndex =
-                        sliderImagesProvider.sliderImages.length - 1;
-                  }
-
-                  Navigator.pop(context); // Close the dialog
-                },
-              );
-            }),
-          ],
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Select Image(s) to Delete",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  alignment: WrapAlignment.start,
+                  children: [
+                    ...querySnapshot.docs.map((doc) {
+                      String imageUrl = doc['url'] as String;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (selectedImages.contains(imageUrl)) {
+                              selectedImages.remove(imageUrl);
+                            } else {
+                              selectedImages.add(imageUrl);
+                            }
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                  color: selectedImages.contains(imageUrl)
+                                      ? Colors.green
+                                      : Colors.transparent,
+                                  width: 2.0,
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                            ),
+                            if (selectedImages.contains(imageUrl))
+                              Positioned.fill(
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.5),
+                                  child: const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog without deletion
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Delete selected images
+              for (String imageUrl in selectedImages) {
+                // Delete the image from Firebase Storage
+                Reference storageRef =
+                    FirebaseStorage.instance.refFromURL(imageUrl);
+                try {
+                  await storageRef.delete();
+                } catch (e) {
+                  print("Error deleting image from storage: $e");
+                  // Handle error, maybe show a snackbar
+                }
+
+                // Delete the image document from Firestore
+                QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+                    .collection('slider_images')
+                    .where('url', isEqualTo: imageUrl)
+                    .get();
+                querySnapshot.docs.forEach((doc) async {
+                  try {
+                    await doc.reference.delete();
+                  } catch (e) {
+                    print("Error deleting image document from Firestore: $e");
+                    // Handle error, maybe show a snackbar
+                  }
+                });
+              }
+
+              // Close the dialog
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Colors.green),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Future<void> deleteDuplicateImages() async {
+    try {
+      // Fetch all image URLs from Firestore
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('slider_images').get();
+
+      // List to hold URLs of duplicate images
+      List<String> duplicateUrls = [];
+
+      // Loop through each document in the query snapshot
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        String currentUrl = doc['url'] as String;
+
+        // Query Firestore again to find documents with the same URL
+        QuerySnapshot duplicateQuerySnapshot = await FirebaseFirestore.instance
+            .collection('slider_images')
+            .where('url', isEqualTo: currentUrl)
+            .get();
+
+        // If more than one document is found with the same URL, it's a duplicate
+        if (duplicateQuerySnapshot.size > 1) {
+          // Add the URL to the list of duplicates
+          duplicateUrls.add(currentUrl);
+        }
+      }
+
+      // Delete duplicate images from Firestore and Storage
+      for (String url in duplicateUrls) {
+        // Delete the image document from Firestore
+        QuerySnapshot docsToDelete = await FirebaseFirestore.instance
+            .collection('slider_images')
+            .where('url', isEqualTo: url)
+            .get();
+
+        docsToDelete.docs.forEach((doc) async {
+          await doc.reference.delete();
+        });
+
+        // Delete the image from Firebase Storage
+        Reference storageRef = FirebaseStorage.instance.refFromURL(url);
+        await storageRef.delete();
+      }
+    } catch (error) {
+      print('Error deleting duplicate images: $error');
+      // Handle error, maybe show a snackbar
+    }
   }
 }
 
@@ -371,7 +567,7 @@ class NoticeContainer extends StatelessWidget {
           Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.black,
             ),
@@ -467,7 +663,7 @@ class NoticeContainer extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 notice,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -479,7 +675,7 @@ class NoticeContainer extends StatelessWidget {
               future: _getImageSize(src),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 double? imageHeight = snapshot.data as double?;
                 return imageHeight != null && imageHeight > 300
@@ -499,10 +695,10 @@ class NoticeContainer extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -536,7 +732,7 @@ class NoticeContainer extends StatelessWidget {
   Future<double> _getImageSize(String imageUrl) async {
     Completer<double> completer = Completer<double>();
     Image image = Image.network(imageUrl);
-    image.image.resolve(ImageConfiguration()).addListener(
+    image.image.resolve(const ImageConfiguration()).addListener(
       ImageStreamListener(
         (ImageInfo info, bool _) {
           completer.complete(info.image.height.toDouble());

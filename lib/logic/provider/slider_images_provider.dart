@@ -35,12 +35,4 @@ class SliderImagesProvider extends ChangeNotifier {
       print("Error adding image: $error");
     }
   }
-
-  Future<void> deleteImage(int index) async {
-    try {
-      // Existing code to delete image
-    } catch (error) {
-      print("Error deleting image: $error");
-    }
-  }
 }

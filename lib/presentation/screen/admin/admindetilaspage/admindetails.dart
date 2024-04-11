@@ -9,7 +9,7 @@ class AdminDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.blue.shade900,
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           title: const Text(
             "Details",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'dart:io';
 
@@ -44,6 +44,7 @@ class PaymentForm extends StatefulWidget {
 
 class _PaymentFormState extends State<PaymentForm> {
   File? _image;
+  String _selectedOption = 'Hostel';
   final picker = ImagePicker();
 
   final TextEditingController _nameController = TextEditingController();
@@ -122,6 +123,43 @@ class _PaymentFormState extends State<PaymentForm> {
                 ),
               ),
               const SizedBox(height: 20),
+              DropdownButtonFormField<String>(
+                dropdownColor: Colors.black,
+                elevation: 5,
+                isExpanded: true,
+                decoration: InputDecoration(
+                  // labelText: 'Paying For:',
+                  prefixIcon: const Icon(Icons.arrow_drop_down),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromARGB(
+                      255, 0, 0, 0), // Set background color
+                ),
+                value: _selectedOption,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedOption = newValue!;
+                  });
+                },
+                items: <String>['Hostel', 'Electricity', 'Mess']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Center(
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                            fontFamily: 'Mazzard', color: Colors.white),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -155,7 +193,6 @@ class _PaymentFormState extends State<PaymentForm> {
                 onPressed: () async {
                   // Check if any field is empty
                   if (_nameController.text.isEmpty ||
-                      _studentIDController.text.isEmpty ||
                       _transactionDetailsController.text.isEmpty ||
                       _image == null) {
                     // Show snackbar with red background and white text
@@ -214,6 +251,8 @@ class _PaymentFormState extends State<PaymentForm> {
                     'studentID': studentID,
                     'transactionDetails': transactionDetails,
                     'imageUrl': imageUrl,
+                    'status': 'Pending',
+                    'option': _selectedOption,
                     'timestamp': FieldValue.serverTimestamp(),
                   });
 
@@ -304,58 +343,158 @@ class PaymentHistoryScreen extends StatelessWidget {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var payment = snapshot.data!.docs[index];
-              return ListTile(
-                title: Text('Transaction ID: ${payment.id}'),
-                subtitle: Text('Date: ${payment['timestamp'].toDate()}'),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Theme(
-                        data: ThemeData(
-                          brightness: Brightness.dark,
-                        ),
-                        child: AlertDialog(
-                          title: const Text(
-                            'Payment Details',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          content: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+              String status = payment['status'] ?? 'Pending';
+              String selectedOption = payment['option'] ?? 'Hostel';
+              Color statusColor;
+              if (status == 'Approve') {
+                statusColor = Colors.green;
+              } else if (status == 'Deny') {
+                statusColor = Colors.red;
+              } else {
+                statusColor = Colors.yellow;
+              }
+              Icon _getIcon(String selectedOption) {
+                switch (selectedOption) {
+                  case 'Electricity':
+                    return const Icon(
+                      Icons.flash_on,
+                      color: Colors.white,
+                      size: 18,
+                    );
+                  case 'Hostel':
+                    return const Icon(
+                      Icons.home,
+                      color: Colors.white,
+                      size: 18,
+                    );
+                  case 'Mess':
+                    return const Icon(
+                      Icons.restaurant,
+                      color: Colors.white,
+                      size: 18,
+                    );
+                  default:
+                    return const Icon(
+                      Icons.tag,
+                      color: Colors.white,
+                      size: 18,
+                    );
+                }
+              }
+
+              return Card(
+                shadowColor: statusColor,
+                elevation: 4,
+                color: Colors.black,
+                child: ListTile(
+                  title: Text('Transaction ID: ${payment.id}',
+                      style: const TextStyle(color: Colors.white)),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Date: ${payment['timestamp'].toDate()}',
+                          style: const TextStyle(color: Colors.white)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Status: $status',
+                              style: TextStyle(color: statusColor)),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey[
+                                  800], // Set background color to a darker shade
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(
+                                      0.5), // Set shadow color and opacity
+                                  spreadRadius: 2, // Set spread radius
+                                  blurRadius: 3, // Set blur radius
+                                  offset: const Offset(0, 2), // Set offset
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
+                                _getIcon(selectedOption),
+                                const SizedBox(
+                                    width:
+                                        7), // Add some spacing between icon and text
                                 Text(
-                                  'Name: ${payment['name']}',
-                                  style: const TextStyle(color: Colors.white),
+                                  selectedOption,
+                                  style: const TextStyle(
+                                    color:
+                                        Colors.white, // Set text color to white
+                                    fontWeight:
+                                        FontWeight.bold, // Make text bold
+                                  ),
                                 ),
-                                Text(
-                                  'Student ID: ${payment['studentID']}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  'Transaction Details: ${payment['transactionDetails']}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                if (payment['imageUrl'] != null)
-                                  Image.network(payment['imageUrl']),
                               ],
                             ),
                           ),
-                          backgroundColor: Colors.black,
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Close',
-                                  style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                      // Text('Status: $status',
+                      //     style: TextStyle(color: statusColor)),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Theme(
+                          data: ThemeData(
+                            brightness: Brightness.dark,
+                          ),
+                          child: AlertDialog(
+                            title: const Text(
+                              'Payment Details',
+                              style: TextStyle(color: Colors.white),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Name: ${payment['name']}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'Student ID: ${payment['studentID']}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'Transaction Details: ${payment['transactionDetails']}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  if (payment['imageUrl'] != null)
+                                    Image.network(payment['imageUrl']),
+                                ],
+                              ),
+                            ),
+                            backgroundColor: Colors.black,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Close',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               );
             },
           );

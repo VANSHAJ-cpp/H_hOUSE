@@ -17,8 +17,8 @@ class AdminDashbordScreen extends StatefulWidget {
 class _AdminDashbordScreenState extends State<AdminDashbordScreen> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    AdminHome(),
-    AdminComplaintScreen(),
+    const AdminHome(),
+    const AdminComplaintScreen(),
     MenuScreen(),
     AdminPaymentCheckScreen(), // Added AdminPaymentCheckScreen
   ];
@@ -30,7 +30,7 @@ class _AdminDashbordScreenState extends State<AdminDashbordScreen> {
   void initState() {
     super.initState();
     // Initialize the timer in initState
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // Your timer callback logic here
     });
   }
@@ -63,8 +63,8 @@ class _AdminDashbordScreenState extends State<AdminDashbordScreen> {
               gap: 8,
               activeColor: Colors.white,
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              duration: Duration(milliseconds: 400),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              duration: const Duration(milliseconds: 400),
               tabBackgroundColor: Colors.blue,
               tabs: const [
                 GButton(

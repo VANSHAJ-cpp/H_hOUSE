@@ -283,7 +283,7 @@ class _LogInScreenState extends State<LogInScreen> {
           if (user != null) {
             Navigator.pushNamedAndRemoveUntil(
               context,
-              studentDashboardScreenRoute,
+              '/firstTimeLoginForm',
               (route) => false,
             );
 

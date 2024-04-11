@@ -18,6 +18,7 @@ const String approveDennyLeaveScreenRoute = '/approveDennyLeaveScreen';
 const String adminDetailsScreenRoute = "/adminDetails";
 
 //student
+
 const String studentDashboardScreenRoute = "/stuDash";
 const String studentDetailScreenRoute = "/studentDetails";
 const String electricitycomplaintscreenRoute = "/electricitycomplaint";

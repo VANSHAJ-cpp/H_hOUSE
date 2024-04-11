@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hostelapplication/core/constant/string.dart';
 import 'package:hostelapplication/logic/service/auth_services/auth_service.dart';
+import 'package:hostelapplication/presentation/screen/admin/studentdetails.dart';
 import 'package:provider/provider.dart';
 
 class AdminDrawer extends StatelessWidget {
-  const AdminDrawer({super.key});
+  const AdminDrawer({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,31 @@ class AdminDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pushNamed(context, helpscreenRoute);
-                // Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.group,
+                    color: Colors.blue.shade900,
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Text(
+                    'Student Details',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          StudentDetailsScreen()), // Replace StudentDetailsScreen with your actual screen widget
+                );
               },
             ),
             ListTile(

@@ -60,11 +60,24 @@ class _SplashScreen1State extends State<SplashScreen1> {
               prefs.setBool('isAdminLoggedIn', true);
             }
           } else {
-            if (this.mounted) {
-              setState(() {
-                loginNum = 2; // Set loginNum to 2 for student user
-              });
-            }
+            // Check if the user has completed the registration form
+            FirebaseFirestore.instance
+                .collection('User')
+                .doc(user.uid)
+                .get()
+                .then((DocumentSnapshot<Map<String, dynamic>> snapshot) {
+              if (snapshot.exists && snapshot.data()!['Class'] != null) {
+                // User has completed the registration form
+                setState(() {
+                  loginNum = 2; // Set loginNum to 2 for student user
+                });
+              } else {
+                // User has not completed the registration form
+                setState(() {
+                  loginNum = 4; // Set loginNum to 4 for first-time login
+                });
+              }
+            });
           }
         } else {
           if (this.mounted) {

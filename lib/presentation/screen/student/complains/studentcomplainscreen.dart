@@ -27,6 +27,7 @@ class _StudentComplainScreenState extends State<StudentComplainScreen>
     'Bugs & Insects',
     'Other'
   ];
+
   final List<String> descriptions = [
     'Report water-related issues such as leakages, shortage, etc.',
     'Report electrical issues such as power outage, flickering lights, etc.',

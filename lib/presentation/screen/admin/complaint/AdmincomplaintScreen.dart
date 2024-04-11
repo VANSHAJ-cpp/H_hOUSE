@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hostelapplication/presentation/screen/admin/AdminDrawer.dart';
+import 'package:hostelapplication/presentation/screen/admin/complaint/approveDenyCompScreen.dart';
 import 'package:hostelapplication/presentation/screen/admin/complaint/declineApproveListScreen.dart';
 import 'package:hostelapplication/presentation/screen/admin/complaint/pendingComplaintListScreen.dart';
 
@@ -26,11 +27,11 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
     'Other'
   ];
 
-  void _navigateToPendingComplaintListScreen(String complaintTitle) {
+  void _navigateToPendingComplaintListScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PendingComplainListScreen(complaintTitle),
+        builder: (context) => PendingComplainListScreen(),
       ),
     );
   }
@@ -40,83 +41,81 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
-        title: const Text(
-          'Complaint',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        title: Center(
+          child: const Text(
+            'Student Complaints',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
-      drawer: const AdminDrawer(),
-      body: Container(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
-                itemCount: images.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _navigateToPendingComplaintListScreen(imagesText[index]);
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Image.asset(
+            'assets/onboard/1.jpg',
+            fit: BoxFit.cover,
+          ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              children: [
+                Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PendingComplainListScreen(),
+                        ),
+                      );
+                      setState(
+                          () {}); // Update the UI after returning from PendingComplainListScreen
                     },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.pending,
+                        color: Color.fromARGB(255, 0, 0, 0),
                       ),
-                      color: Colors.white,
-                      elevation: 1,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Image.asset(
-                              images[index],
-                              height: 70,
-                              width: 70,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 25,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              imagesText[index],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.blue.shade900),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          )
-                        ],
+                      title: const Text(
+                        'Pending Complaints',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeclineApproveListScreen(1),
                   ),
-                );
-                setState(
-                    () {}); // Update the UI after returning from DeclineApproveListScreen
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: [
-                      Text(
+                ),
+                Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeclineApproveListScreen(1),
+                        ),
+                      );
+                      setState(
+                          () {}); // Update the UI after returning from DeclineApproveListScreen
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                      ),
+                      title: const Text(
                         'Approved Complaints',
                         style: TextStyle(
                           color: Colors.green,
@@ -124,33 +123,32 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Spacer(),
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeclineApproveListScreen(2),
+                Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                );
-                setState(
-                    () {}); // Update the UI after returning from DeclineApproveListScreen
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: [
-                      Text(
+                  child: InkWell(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeclineApproveListScreen(2),
+                        ),
+                      );
+                      setState(
+                          () {}); // Update the UI after returning from DeclineApproveListScreen
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                      title: const Text(
                         'Declined Complaints',
                         style: TextStyle(
                           color: Colors.red,
@@ -158,18 +156,13 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Spacer(),
-                      Icon(
-                        Icons.error,
-                        color: Colors.red,
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

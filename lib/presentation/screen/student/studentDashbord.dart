@@ -20,6 +20,8 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     const StudentHome(),
     const StudentComplainScreen(),
     const FoodMenuScreen(),
+    const StudentPaymentSubmissionScreen(),
+    PaymentHistoryScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -89,10 +91,6 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     tabBackgroundColor: Colors.blue, // Changed to blue
                     tabs: const [
                       GButton(
-                        // hoverColor: Colors.amberAccent,
-                        // shadow: [
-                        //   BoxShadow(blurRadius: BorderSide.strokeAlignCenter)
-                        // ],
                         icon: Icons.home_outlined,
                         text: 'Home',
                       ),
@@ -118,20 +116,23 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       } else {
                         // If index is for payment, check payment history
                         if (hasPaymentHistory) {
+                          _onItemTapped(4);
                           // If the user has payment history, navigate to PaymentHistoryScreen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentHistoryScreen()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => PaymentHistoryScreen()),
+                          // );
                         } else {
+                          _onItemTapped(3);
+
                           // If the user has no payment history, navigate to PaymentForm
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const StudentPaymentSubmissionScreen()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const StudentPaymentSubmissionScreen()),
+                          // );
                         }
                       }
                     },

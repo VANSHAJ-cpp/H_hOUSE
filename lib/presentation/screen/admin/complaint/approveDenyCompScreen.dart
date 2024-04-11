@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ApproveDenyComplainList extends StatelessWidget {
   final DocumentSnapshot complaintData;
 
-  const ApproveDenyComplainList(this.complaintData, {Key? key})
-      : super(key: key);
+  const ApproveDenyComplainList(this.complaintData, {super.key});
 
-  Future<void> updateComplaintStatus(String status) async {
+  Future<void> updateComplaintStatus(
+      BuildContext context, String status) async {
     try {
       // Update the status of the complaint
       await FirebaseFirestore.instance
@@ -32,7 +32,15 @@ class ApproveDenyComplainList extends StatelessWidget {
                 as Map<String, dynamic>); // Explicit casting
       }
 
-      print('Complaint status updated to $status');
+      // Show snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Complaint status updated to $status'),
+        ),
+      );
+
+      // Pop current screen
+      Navigator.pop(context);
     } catch (error) {
       print('Error updating complaint status: $error');
     }
@@ -44,7 +52,7 @@ class ApproveDenyComplainList extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
           'Approve/Deny Complaint',
           style: TextStyle(
@@ -81,10 +89,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                     children: [
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Center(
                                   child: Text(
                                     'Complaint ID',
@@ -112,10 +120,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                       ),
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   'Name',
                                   style: TextStyle(fontSize: 18),
@@ -141,10 +149,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                       ),
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   'Room No.',
                                   style: TextStyle(fontSize: 18),
@@ -170,10 +178,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                       ),
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   'Date',
                                   style: TextStyle(fontSize: 18),
@@ -199,10 +207,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                       ),
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   'Complaint Type',
                                   style: TextStyle(fontSize: 18),
@@ -228,10 +236,10 @@ class ApproveDenyComplainList extends StatelessWidget {
                       ),
                       TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: tablepadding,
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   'Status',
                                   style: TextStyle(fontSize: 18),
@@ -299,7 +307,7 @@ class ApproveDenyComplainList extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           // Deny action
-                          updateComplaintStatus('Denied');
+                          updateComplaintStatus(context, 'Denied');
                         },
                         child: Container(
                           decoration: const BoxDecoration(
@@ -328,7 +336,7 @@ class ApproveDenyComplainList extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           // Approve action
-                          updateComplaintStatus('Approved');
+                          updateComplaintStatus(context, 'Approved');
                         },
                         child: Container(
                           decoration: const BoxDecoration(

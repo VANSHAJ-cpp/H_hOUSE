@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddNoticeScreen extends StatefulWidget {
-  AddNoticeScreen({Key? key}) : super(key: key);
+  const AddNoticeScreen({super.key});
 
   @override
   State<AddNoticeScreen> createState() => _AddNoticeScreenState();
@@ -25,7 +25,7 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.blue.shade900,
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           title: const Text(
             'Add Notice',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -84,7 +84,8 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
                             child: Center(
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade900,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 0, 0),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
@@ -94,19 +95,24 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
                                 },
                                 child: const Text(
                                   "Add Attachment",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           pickedFile != null || imageFile != null
                               ? Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  padding: EdgeInsets.all(5),
-                                  color: Colors.blue[100],
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  padding: const EdgeInsets.all(5),
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
                                   child: Text(
                                     "${pickedFile?.name ?? imageFile?.path}",
                                     softWrap: false,
@@ -115,7 +121,7 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
                                   ),
                                 )
                               : const SizedBox(),
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                         ],
@@ -127,16 +133,16 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
                     left: 0,
                     bottom: 20,
                     child: FloatingActionButton(
-                      backgroundColor: Colors.blue.shade900,
+                      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                       onPressed: () async {
-                        if (pickedFile == null && imageFile == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Please select a file to upload'),
-                            ),
-                          );
-                          return;
-                        }
+                        // if (pickedFile == null && imageFile == null) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     SnackBar(
+                        //       content: Text('Please select a file to upload'),
+                        //     ),
+                        //   );
+                        //   return;
+                        // }
 
                         setState(() {
                           showLoading = true;
@@ -195,7 +201,7 @@ class _AddNoticeScreenState extends State<AddNoticeScreen> {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           });

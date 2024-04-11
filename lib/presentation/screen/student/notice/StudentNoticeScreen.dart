@@ -326,10 +326,17 @@ class _StudentHomeState extends State<StudentHome> {
                 ? GroupedListView<Notice, String>(
                     elements: [...noticeList],
                     groupBy: (element) {
-                      final formattedDate =
-                          DateFormat('dd MMMM yyyy').format(element.time);
-
+                      final formattedDate = DateFormat('yyyy-MM-dd')
+                          .format(element.time); // Format as yyyy-MM-dd
                       return formattedDate;
+                    },
+                    groupComparator: (group1, group2) {
+                      // Sort groups in descending order based on date
+                      return group2.compareTo(group1);
+                    },
+                    itemComparator: (item1, item2) {
+                      // Sort items in descending order based on full date
+                      return item2.time.compareTo(item1.time);
                     },
                     groupSeparatorBuilder: (String value) => Padding(
                       padding: const EdgeInsets.only(top: 8.0, left: 8),
@@ -349,17 +356,13 @@ class _StudentHomeState extends State<StudentHome> {
                         ],
                       ),
                     ),
-                    order: GroupedListOrder.DESC,
+                    // order: GroupedListOrder.DESC,
                     itemBuilder: (c, element) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: NoticeContainer(
                             element.notice,
-                            element.time.day.toString() +
-                                '/' +
-                                element.time.month.toString() +
-                                '/' +
-                                element.time.year.toString(),
+                            DateFormat('dd MMMM yyyy').format(element.time),
                             element.url!),
                       );
                     },

@@ -190,9 +190,16 @@ class AdminBookingScreen extends StatelessWidget {
               .collection('User')
               .doc(doc['uid'])
               .get();
-          final firstName = userQuery['FirstName'] as String;
-          final lastName = userQuery['Lastname'] as String;
-          final roomNo = userQuery['RoomNo'] as String;
+
+          final firstName = userQuery.exists && userQuery['FirstName'] != null
+              ? userQuery['FirstName'] as String
+              : '';
+          final lastName = userQuery.exists && userQuery['Lastname'] != null
+              ? userQuery['Lastname'] as String
+              : '';
+          final roomNo = userQuery.exists && userQuery['RoomNo'] != null
+              ? userQuery['RoomNo'] as String
+              : '';
 
           allBookings.add({
             'date': (pickupTime as Timestamp).toDate(),

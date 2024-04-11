@@ -59,12 +59,12 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: Text(
           widget.complainStatus == 1
               ? 'Approved complaints'
               : 'Declined complaints',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -75,7 +75,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
             return Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
@@ -100,7 +100,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: Colors.black,
                         width: 0.1,
                       ),
@@ -118,7 +118,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                 children: [
                                   Text(
                                     data?['userName'] ?? '',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 20,
                                     ),
@@ -131,15 +131,15 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                     ),
                                   ),
                                   Text(
-                                    '${data?['timestamp'].toDate().day ?? ''}/${data?['timestamp'].toDate().month ?? ''}/${data?['timestamp'].toDate().year ?? ''}',
-                                    style: TextStyle(
+                                    '${data?['timestamp']?.toDate()?.day ?? ''}/${data?['timestamp']?.toDate()?.month ?? ''}/${data?['timestamp']?.toDate()?.year ?? ''}',
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
                                     ),
                                   ),
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Text(
                                 statusText,
                                 style: TextStyle(
@@ -150,34 +150,34 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          Divider(),
+                          const SizedBox(height: 10),
+                          const Divider(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Complaint Type: ${data?['complaintType'] ?? 'N/A'}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
                               ),
-                              SizedBox(height: 5),
-                              Text(
+                              const SizedBox(height: 5),
+                              const Text(
                                 'Complaint Description:',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text(
                                 data?['complaintDescription'] ?? '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               if (data?['imageUrl'] != null &&
                                   data?['imageUrl'].isNotEmpty)
                                 ElevatedButton(
@@ -203,7 +203,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                       print('Image URL not found');
                                     }
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'View Image',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -220,7 +220,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                 ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           if (widget.complainStatus == 0)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -229,7 +229,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                   onPressed: () {
                                     updateComplaintStatus(document.id, 1);
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Approve',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -244,12 +244,12 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: () {
                                     updateComplaintStatus(document.id, 2);
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Deny',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -283,7 +283,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                     height: 250,
                     width: 250,
                   ),
-                  Text(
+                  const Text(
                     'No Complaints :)',
                     style: TextStyle(
                       fontSize: 25,

@@ -18,6 +18,8 @@ import 'package:hostelapplication/logic/service/fireStoreServices/user_firestore
 import 'package:hostelapplication/presentation/router/route.dart';
 import 'package:hostelapplication/presentation/screen/onBordingScreen.dart';
 import 'package:hostelapplication/presentation/screen/onboard_model.dart';
+import 'package:hostelapplication/presentation/screen/student/firstTimeLoginScreen.dart';
+import 'package:hostelapplication/presentation/screen/student/studentDashbord.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -98,6 +100,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/firstTimeLoginForm': (context) => const FirstTimeLoginForm(),
+        '/studentDashboard': (context) => const StudentDashboardScreen(),
+      },
       theme: ThemeData(
         primaryColor: Colors.blue.shade900,
         fontFamily: "Brazila",
@@ -105,7 +111,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: Colors.blue.shade900,
           elevation: 0.0,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           toolbarTextStyle:
               Theme.of(context).textTheme.bodyText2, // Use toolbarTextStyle
           titleTextStyle:

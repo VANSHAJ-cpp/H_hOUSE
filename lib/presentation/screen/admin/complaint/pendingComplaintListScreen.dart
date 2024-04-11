@@ -3,18 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hostelapplication/presentation/screen/admin/complaint/approveDenyCompScreen.dart';
 
 class PendingComplainListScreen extends StatelessWidget {
-  PendingComplainListScreen(this.complaintTitle, {Key? key}) : super(key: key);
+  PendingComplainListScreen({Key? key}) : super(key: key);
 
-  final String complaintTitle;
+  // final String complaintTitle;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: Text(
-          '$complaintTitle complaints',
+          'Pending Complaints',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -24,7 +24,7 @@ class PendingComplainListScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('StudentComplaint')
-            .where('complaintTitle', isEqualTo: complaintTitle)
+            // .where('complaintTitle', isEqualTo: complaintTitle)
             .where('status', isEqualTo: 'Pending')
             .snapshots(),
         builder: (context, snapshot) {

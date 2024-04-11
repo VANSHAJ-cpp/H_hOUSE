@@ -70,7 +70,11 @@ class _MenuScreenPageState extends State<MenuScreenPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hostel Food Menu'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Hostel Food Menu',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         elevation: 0,
         actions: [

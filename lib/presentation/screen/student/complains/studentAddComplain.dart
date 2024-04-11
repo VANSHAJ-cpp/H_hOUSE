@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -67,6 +69,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
           title: const Text(
             "Add Complaint",
             style: TextStyle(
@@ -134,39 +137,39 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
-                        child: Text(
-                          'Complaint Type',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      // const Padding(
+                      //   padding: EdgeInsets.only(bottom: 20.0),
+                      //   child: Text(
+                      //     'Complaint Type',
+                      //     style: TextStyle(
+                      //         fontSize: 20, fontWeight: FontWeight.bold),
+                      //   ),
+                      // ),
                       // Dropdown for complaint type
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          labelText: 'Select Type',
-                          border: OutlineInputBorder(),
-                        ),
-                        value: _selectedComplaintType,
-                        items: <String>[
-                          'Electricity',
-                          'Water',
-                          'Internet',
-                          'Room Condition',
-                          'Others',
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _selectedComplaintType = value;
-                          });
-                        },
-                      ),
+                      // DropdownButtonFormField<String>(
+                      //   decoration: const InputDecoration(
+                      //     labelText: 'Select Type',
+                      //     border: OutlineInputBorder(),
+                      //   ),
+                      //   value: _selectedComplaintType,
+                      //   items: <String>[
+                      //     'Electricity',
+                      //     'Water',
+                      //     'Internet',
+                      //     'Room Condition',
+                      //     'Others',
+                      //   ].map<DropdownMenuItem<String>>((String value) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: value,
+                      //       child: Text(value),
+                      //     );
+                      //   }).toList(),
+                      //   onChanged: (String? value) {
+                      //     setState(() {
+                      //       _selectedComplaintType = value;
+                      //     });
+                      //   },
+                      // ),
                       const SizedBox(height: 20),
                       const Padding(
                         padding: EdgeInsets.only(bottom: 20.0),
@@ -190,6 +193,7 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                       const SizedBox(height: 20),
                       // Button to attach image
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton.icon(
                             onPressed: () => _getImage(ImageSource.camera),
@@ -285,7 +289,12 @@ class _StudentAddComplaintScreenState extends State<StudentAddComplaintScreen> {
                             });
                           }
                         },
-                        child: const Text('Submit Complaint'),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black),
+                        child: const Text(
+                          'Submit Complaint',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   );

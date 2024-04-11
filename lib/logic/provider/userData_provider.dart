@@ -10,7 +10,8 @@ class UsereDataProvider with ChangeNotifier {
   late String _roomNo;
   late String _email;
   late String _mobileNo;
-   String _userimage = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  String _userimage =
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   DateTime _time = DateTime.now();
 
   // getter
@@ -59,7 +60,7 @@ class UsereDataProvider with ChangeNotifier {
         lastName: getLastName,
         roomNo: getRoomNo,
         mobileNo: getEnrollment,
-        userimage: getUserimage.isEmpty ? '' :getUserimage ,
+        userimage: getUserimage.isEmpty ? '' : getUserimage,
         time: _time);
     service.saveUser(newUserData);
   }
