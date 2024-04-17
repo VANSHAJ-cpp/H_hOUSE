@@ -291,7 +291,8 @@ class _FirstTimeLoginFormState extends State<FirstTimeLoginForm> {
 
                     // Combine existing data with new data
                     Map<String, dynamic> userData = {
-                      ...userSnapshot.data()!, // Existing data
+                      ...userSnapshot.data() ?? {}, // Existing data
+                      // Existing data
                       'Class': _classController.text,
                       'Coaching Name': _coachingNameController.text,
                       'Father Number': _fatherNumberController.text,

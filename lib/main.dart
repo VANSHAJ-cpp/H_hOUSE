@@ -32,6 +32,7 @@ Future<void> main() async {
   initScreen = prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
   await Firebase.initializeApp(
+    name: 'hhouse-final',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
@@ -113,9 +114,9 @@ class MyApp extends StatelessWidget {
           elevation: 0.0,
           iconTheme: const IconThemeData(color: Colors.white),
           toolbarTextStyle:
-              Theme.of(context).textTheme.bodyText2, // Use toolbarTextStyle
+              Theme.of(context).textTheme.bodyMedium, // Use toolbarTextStyle
           titleTextStyle:
-              Theme.of(context).textTheme.headline6, // Use titleTextStyle
+              Theme.of(context).textTheme.titleLarge, // Use titleTextStyle
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.blue.shade900,

@@ -38,6 +38,7 @@ class StudentDetailsScreen extends StatelessWidget {
               child: Column(
                 children: snapshot.data!.docs.map((student) {
                   return StudentCard(
+                    userId: student.id,
                     firstName: getFieldValue(student.data(), 'FirstName'),
                     lastName: getFieldValue(student.data(), 'Lastname'),
                     roomNo: getFieldValue(student.data(), 'RoomNo'),
@@ -59,7 +60,7 @@ class StudentDetailsScreen extends StatelessWidget {
   }
 }
 
-class StudentCard extends StatelessWidget {
+class StudentCard extends StatefulWidget {
   final String firstName;
   final String lastName;
   final String roomNo;
@@ -68,6 +69,7 @@ class StudentCard extends StatelessWidget {
   final String fatherNumber;
   final String motherNumber;
   final String userImage;
+  final String userId;
 
   StudentCard({
     required this.firstName,
@@ -78,7 +80,28 @@ class StudentCard extends StatelessWidget {
     required this.fatherNumber,
     required this.motherNumber,
     required this.userImage,
+    required this.userId,
   });
+
+  @override
+  _StudentCardState createState() => _StudentCardState();
+}
+
+class _StudentCardState extends State<StudentCard> {
+  late TextEditingController _duesController;
+  bool _showTextField = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _duesController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _duesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +122,7 @@ class StudentCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(userImage),
+                    backgroundImage: NetworkImage(widget.userImage),
                   ),
                   SizedBox(width: 10),
                   Expanded(
@@ -107,7 +130,7 @@ class StudentCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$firstName $lastName',
+                          '${widget.firstName} ${widget.lastName}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -116,7 +139,7 @@ class StudentCard extends StatelessWidget {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          'Room No: $roomNo',
+                          'Room No: ${widget.roomNo}',
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
@@ -125,70 +148,52 @@ class StudentCard extends StatelessWidget {
                 ],
               ),
             ),
-            _buildContactGroup(
-              'Father',
-              fatherName ?? 'Not Registered Yet',
-              fatherNumber ?? '',
-              const Color.fromARGB(255, 0, 0, 0),
-            ),
-            _buildContactGroup(
-              'Mother',
-              motherName ?? 'Not Registered Yet',
-              motherNumber ?? '',
-              const Color.fromARGB(255, 0, 0, 0),
-            ),
+            _showTextField
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _duesController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Enter Dues Amount',
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _showTextField = false;
+                          });
+                          _addDues();
+                        },
+                        child: Text('Tick'),
+                      ),
+                    ],
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _showTextField = true;
+                      });
+                    },
+                    child: Text('Add Dues'),
+                  ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildContactGroup(
-      String title, String name, String number, Color color) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.8),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text(name),
-            subtitle: number.isNotEmpty
-                ? Text(number)
-                : Text(
-                    'Not Registered Yet',
-                    style: TextStyle(color: Colors.red),
-                  ),
-          ),
-        ],
-      ),
-    );
+  void _addDues() {
+    if (_duesController.text.isNotEmpty) {
+      int amount = int.parse(_duesController.text);
+      // Perform Firestore update and add dues functionality here
+      FirebaseFirestore.instance.collection('User').doc(widget.userId).update({
+        'dues': FieldValue.increment(amount),
+      });
+      // Clear the text field
+      _duesController.clear();
+    }
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: StudentDetailsScreen(),
-  ));
 }

@@ -13,11 +13,11 @@ class MenuScreen extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',
         textTheme: const TextTheme(
-          bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
-          bodyText2: TextStyle(fontSize: 14.0, color: Colors.black54),
-          headline1: TextStyle(
+          bodyLarge: TextStyle(fontSize: 16.0, color: Colors.black),
+          bodyMedium: TextStyle(fontSize: 14.0, color: Colors.black54),
+          displayLarge: TextStyle(
               fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.blue),
-          headline2: TextStyle(
+          displayMedium: TextStyle(
               fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.blue),
         ),
       ),
@@ -262,7 +262,7 @@ class _MenuScreenPageState extends State<MenuScreenPage>
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
         const SizedBox(height: 10),
         Column(
@@ -275,7 +275,7 @@ class _MenuScreenPageState extends State<MenuScreenPage>
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         item,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ))

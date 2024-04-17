@@ -156,7 +156,7 @@ class _DeclineApproveListScreenState extends State<DeclineApproveListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Complaint Type: ${data?['complaintType'] ?? 'N/A'}',
+                                'Complaint Type: ${data?['complaintTitle'] ?? 'N/A'}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,

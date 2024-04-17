@@ -1,45 +1,45 @@
 {
   "project_info": {
-    "project_number": "81516595224",
-    "project_id": "team-hhouse",
-    "storage_bucket": "team-hhouse.appspot.com"
+    "project_number": "596551481280",
+    "project_id": "hhouse-final",
+    "storage_bucket": "hhouse-final.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:81516595224:android:74b92097b5238250455b6d",
+        "mobilesdk_app_id": "1:596551481280:android:eb0120624fb5a5a0767a25",
         "android_client_info": {
           "package_name": "com.iycreateapp.myhostel"
         }
       },
       "oauth_client": [
         {
-          "client_id": "81516595224-k410kv93u87j85u2rtsa4l58tps10690.apps.googleusercontent.com",
+          "client_id": "596551481280-coih98i54bdfluhfo5tiomaupi4er1vg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.iycreateapp.myhostel",
-            "certificate_hash": "74a9afb23814996605f7b82ae20769824eeb96ad"
+            "certificate_hash": "c7c621c0189b2c4928ae79e3d40451c2199330f4"
           }
         },
         {
-          "client_id": "81516595224-4p5gapm8mjl4vab28l2d6dj1835njk05.apps.googleusercontent.com",
+          "client_id": "596551481280-9d2tta9gsf7qg4b7sau2i56sa9360s0m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAFCl96TK1x7BYu8H3r-hxPfYCCZKNFbxM"
+          "current_key": "AIzaSyBOZJ2YIrtTx13TEGVS1Cd9XYVqWerdyV4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "81516595224-4p5gapm8mjl4vab28l2d6dj1835njk05.apps.googleusercontent.com",
+              "client_id": "596551481280-9d2tta9gsf7qg4b7sau2i56sa9360s0m.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "81516595224-5c90cjrshvv3m261ug6ha8kk22t5ak3m.apps.googleusercontent.com",
+              "client_id": "596551481280-5ssupfgn9r8pp746guk0on7ljp2ufpl1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.iycreateapp.myhostel"

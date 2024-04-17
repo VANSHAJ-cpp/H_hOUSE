@@ -44,38 +44,41 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAHvlHGpXqxMlLqMaExqR07vOrH1150uXE',
-    appId: '1:81516595224:web:77b58c04524ae56b455b6d',
-    messagingSenderId: '81516595224',
-    projectId: 'team-hhouse',
-    authDomain: 'team-hhouse.firebaseapp.com',
-    storageBucket: 'team-hhouse.appspot.com',
-    measurementId: 'G-04VBNLXSNS',
+    apiKey: 'AIzaSyDvcO51yajR4-an_tEvkE6aDLKz9a2tIJE',
+    appId: '1:596551481280:web:28f04f62474c76e6767a25',
+    messagingSenderId: '596551481280',
+    projectId: 'hhouse-final',
+    authDomain: 'hhouse-final.firebaseapp.com',
+    storageBucket: 'hhouse-final.appspot.com',
+    measurementId: 'G-3S4HEN1YF8',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAFCl96TK1x7BYu8H3r-hxPfYCCZKNFbxM',
-    appId: '1:81516595224:android:74b92097b5238250455b6d',
-    messagingSenderId: '81516595224',
-    projectId: 'team-hhouse',
-    storageBucket: 'team-hhouse.appspot.com',
+    apiKey: 'AIzaSyBOZJ2YIrtTx13TEGVS1Cd9XYVqWerdyV4',
+    appId: '1:596551481280:android:eb0120624fb5a5a0767a25',
+    messagingSenderId: '596551481280',
+    projectId: 'hhouse-final',
+    storageBucket: 'hhouse-final.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAzugpjG4d-adpYUwOeWitBYaA4vBXj-oo',
-    appId: '1:81516595224:ios:f433b4fdc74f7fb0455b6d',
-    messagingSenderId: '81516595224',
-    projectId: 'team-hhouse',
-    storageBucket: 'team-hhouse.appspot.com',
+    apiKey: 'AIzaSyBFNLR6NQaCsrOSzRKGVSwelooFe74jJyg',
+    appId: '1:596551481280:ios:9d87fd179eff679f767a25',
+    messagingSenderId: '596551481280',
+    projectId: 'hhouse-final',
+    storageBucket: 'hhouse-final.appspot.com',
+    iosClientId: '596551481280-5ssupfgn9r8pp746guk0on7ljp2ufpl1.apps.googleusercontent.com',
     iosBundleId: 'com.iycreateapp.myhostel',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAzugpjG4d-adpYUwOeWitBYaA4vBXj-oo',
-    appId: '1:81516595224:ios:f433b4fdc74f7fb0455b6d',
-    messagingSenderId: '81516595224',
-    projectId: 'team-hhouse',
-    storageBucket: 'team-hhouse.appspot.com',
+    apiKey: 'AIzaSyBFNLR6NQaCsrOSzRKGVSwelooFe74jJyg',
+    appId: '1:596551481280:ios:9d87fd179eff679f767a25',
+    messagingSenderId: '596551481280',
+    projectId: 'hhouse-final',
+    storageBucket: 'hhouse-final.appspot.com',
+    iosClientId: '596551481280-5ssupfgn9r8pp746guk0on7ljp2ufpl1.apps.googleusercontent.com',
     iosBundleId: 'com.iycreateapp.myhostel',
   );
+
 }

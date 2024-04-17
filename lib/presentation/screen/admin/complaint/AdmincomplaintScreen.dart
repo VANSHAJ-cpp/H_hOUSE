@@ -42,8 +42,8 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        title: Center(
-          child: const Text(
+        title: const Center(
+          child: Text(
             'Student Complaints',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -62,7 +62,8 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
               children: [
                 Card(
                   elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -77,12 +78,12 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                       setState(
                           () {}); // Update the UI after returning from PendingComplainListScreen
                     },
-                    child: ListTile(
-                      leading: const Icon(
+                    child: const ListTile(
+                      leading: Icon(
                         Icons.pending,
                         color: Color.fromARGB(255, 0, 0, 0),
                       ),
-                      title: const Text(
+                      title: Text(
                         'Pending Complaints',
                         style: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0),
@@ -95,7 +96,8 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                 ),
                 Card(
                   elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -110,12 +112,12 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                       setState(
                           () {}); // Update the UI after returning from DeclineApproveListScreen
                     },
-                    child: ListTile(
-                      leading: const Icon(
+                    child: const ListTile(
+                      leading: Icon(
                         Icons.check_circle,
                         color: Colors.green,
                       ),
-                      title: const Text(
+                      title: Text(
                         'Approved Complaints',
                         style: TextStyle(
                           color: Colors.green,
@@ -128,7 +130,8 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                 ),
                 Card(
                   elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -143,12 +146,12 @@ class _AdminComplaintScreenState extends State<AdminComplaintScreen> {
                       setState(
                           () {}); // Update the UI after returning from DeclineApproveListScreen
                     },
-                    child: ListTile(
-                      leading: const Icon(
+                    child: const ListTile(
+                      leading: Icon(
                         Icons.error,
                         color: Colors.red,
                       ),
-                      title: const Text(
+                      title: Text(
                         'Declined Complaints',
                         style: TextStyle(
                           color: Colors.red,

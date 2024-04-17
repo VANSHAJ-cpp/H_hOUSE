@@ -223,7 +223,7 @@ class ApproveDenyComplainList extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  complaintData['complaintType'],
+                                  complaintData['complaintTitle'],
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18,

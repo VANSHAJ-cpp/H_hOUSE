@@ -100,8 +100,6 @@ class _AdminHomeState extends State<AdminHome>
       curve: Curves.easeInOut,
     );
     _controller.forward();
-
-    deleteDuplicateImages();
   }
 
   @override
@@ -309,35 +307,12 @@ class _AdminHomeState extends State<AdminHome>
         TaskSnapshot taskSnapshot = await uploadTask;
         String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-        // Fetch all existing image URLs from Firestore
-        QuerySnapshot querySnapshot =
-            await FirebaseFirestore.instance.collection('slider_images').get();
+        // Add the new image URL to Firestore
+        await FirebaseFirestore.instance.collection('slider_images').add({
+          'url': imageUrl,
+        });
 
-        // List to hold existing image URLs
-        List<String> existingUrls =
-            querySnapshot.docs.map((doc) => doc['url'] as String).toList();
-
-        // Flag to track if the new image URL is a duplicate
-        bool isDuplicate = false;
-
-        // Compare the new image URL with existing URLs
-        for (String existingUrl in existingUrls) {
-          if (existingUrl == imageUrl) {
-            isDuplicate = true;
-            break;
-          }
-        }
-
-        // If the new image URL is not a duplicate, add it to Firestore
-        if (!isDuplicate) {
-          await FirebaseFirestore.instance.collection('slider_images').add({
-            'url': imageUrl,
-          });
-
-          sliderImagesProvider.addImage(imageUrl);
-        } else {
-          print('Image URL already exists in Firestore');
-        }
+        sliderImagesProvider.addImage(imageUrl);
       } catch (error) {
         print('Error uploading image: $error');
         // Handle error uploading image
@@ -483,54 +458,6 @@ class _AdminHomeState extends State<AdminHome>
         ],
       ),
     );
-  }
-
-  Future<void> deleteDuplicateImages() async {
-    try {
-      // Fetch all image URLs from Firestore
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('slider_images').get();
-
-      // List to hold URLs of duplicate images
-      List<String> duplicateUrls = [];
-
-      // Loop through each document in the query snapshot
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        String currentUrl = doc['url'] as String;
-
-        // Query Firestore again to find documents with the same URL
-        QuerySnapshot duplicateQuerySnapshot = await FirebaseFirestore.instance
-            .collection('slider_images')
-            .where('url', isEqualTo: currentUrl)
-            .get();
-
-        // If more than one document is found with the same URL, it's a duplicate
-        if (duplicateQuerySnapshot.size > 1) {
-          // Add the URL to the list of duplicates
-          duplicateUrls.add(currentUrl);
-        }
-      }
-
-      // Delete duplicate images from Firestore and Storage
-      for (String url in duplicateUrls) {
-        // Delete the image document from Firestore
-        QuerySnapshot docsToDelete = await FirebaseFirestore.instance
-            .collection('slider_images')
-            .where('url', isEqualTo: url)
-            .get();
-
-        docsToDelete.docs.forEach((doc) async {
-          await doc.reference.delete();
-        });
-
-        // Delete the image from Firebase Storage
-        Reference storageRef = FirebaseStorage.instance.refFromURL(url);
-        await storageRef.delete();
-      }
-    } catch (error) {
-      print('Error deleting duplicate images: $error');
-      // Handle error, maybe show a snackbar
-    }
   }
 }
 
