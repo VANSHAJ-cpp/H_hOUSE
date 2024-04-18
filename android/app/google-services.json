@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "596551481280-gt44h0lrn9unlavfbjbuil96aphorrdf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iycreateapp.myhostel",
+            "certificate_hash": "82cb86daaaaf2196d3e289c5508fe3d6ec5923e0"
+          }
+        },
+        {
           "client_id": "596551481280-9d2tta9gsf7qg4b7sau2i56sa9360s0m.apps.googleusercontent.com",
           "client_type": 3
         }
