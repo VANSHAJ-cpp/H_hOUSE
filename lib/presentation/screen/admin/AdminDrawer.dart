@@ -7,6 +7,8 @@ import 'package:hostelapplication/logic/service/auth_services/auth_service.dart'
 import 'package:hostelapplication/presentation/screen/admin/studentdetails.dart';
 import 'package:provider/provider.dart';
 
+import 'workers/workers.dart';
+
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({Key? key});
 
@@ -93,6 +95,31 @@ class AdminDrawer extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) =>
                           StudentDetailsScreen()), // Replace StudentDetailsScreen with your actual screen widget
+                );
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.group,
+                    color: Colors.blue.shade900,
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Text(
+                    'Worker Details',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          WorkerScreen()), // Replace StudentDetailsScreen with your actual screen widget
                 );
               },
             ),
