@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hostelapplication/presentation/screen/admin/rooms.dart';
 import 'package:hostelapplication/presentation/screen/auth/logInScreen.dart';
 import 'package:hostelapplication/presentation/screen/auth/registrationScreen.dart';
 import 'package:provider/provider.dart';
@@ -592,6 +593,46 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
+                                          Expanded(
+                                              child: GestureDetector(
+                                            onTap: () async {
+                                              await Navigator
+                                                  .pushAndRemoveUntil(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType.fade,
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  reverseDuration:
+                                                      const Duration(
+                                                          milliseconds: 300),
+                                                  child:
+                                                      RoomAvailabilityScreen(),
+                                                ),
+                                                (r) => false,
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 130,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: colors,
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Text(
+                                                'Check Availability',
+                                                style: TextStyle(
+                                                  fontFamily: 'Mazzard',
+                                                  color: Colors.white,
+                                                  fontSize: 19,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ).animateOnPageLoad(animationsMap[
+                                                'buttonOnPageLoadAnimation1']!),
+                                          )),
                                           Expanded(
                                               child: GestureDetector(
                                             onTap: () async {
