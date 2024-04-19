@@ -78,6 +78,7 @@ dependencies:
   get: ^4.6.6
   pdf: ^3.10.8
   printing: ^5.12.0
+  flutter_staggered_animations: ^1.1.1
 
 flutter_launcher_icons:
   android: "launcher_icon"

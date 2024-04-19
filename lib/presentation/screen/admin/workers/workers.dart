@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -490,20 +491,23 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
             ExpandableList(
               title: 'Leaves History',
               items: worker.leaves
-                  .map(
-                    (date) => 'Date: ${DateFormat('dd-MM-yyyy').format(date)}',
-                  )
-                  .toList(),
+                      ?.map(
+                        (date) =>
+                            'Date: ${DateFormat('dd-MM-yyyy').format(date)}',
+                      )
+                      .toList() ??
+                  [],
             ),
             SizedBox(height: 20.0),
             ExpandableList(
               title: 'Dues History',
               items: worker.dues
-                  .map(
-                    (due) =>
-                        'Date: ${DateFormat('dd-MM-yyyy').format(due.date)}, Amount: ${due.amount}',
-                  )
-                  .toList(),
+                      ?.map(
+                        (due) =>
+                            'Date: ${DateFormat('dd-MM-yyyy').format(due.date)}, Amount: ${due.amount}',
+                      )
+                      .toList() ??
+                  [],
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
@@ -514,11 +518,12 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
             ExpandableList(
               title: 'Transaction History',
               items: worker.transactions
-                  .map(
-                    (transaction) =>
-                        'Date: ${DateFormat('dd-MM-yyyy').format(transaction.date)}, Amount: ${transaction.amount}, Type: ${transaction.type}',
-                  )
-                  .toList(),
+                      ?.map(
+                        (transaction) =>
+                            'Date: ${DateFormat('dd-MM-yyyy').format(transaction.date)}, Amount: ${transaction.amount}, Type: ${transaction.type}',
+                      )
+                      .toList() ??
+                  [],
             ),
           ],
         ),
@@ -623,9 +628,9 @@ class AddDuesDialog extends StatelessWidget {
 
 class ExpandableList extends StatefulWidget {
   final String title;
-  final List<String> items;
+  final List<String>? items;
 
-  ExpandableList({required this.title, required this.items});
+  ExpandableList({required this.title, this.items});
 
   @override
   _ExpandableListState createState() => _ExpandableListState();
@@ -655,21 +660,73 @@ class _ExpandableListState extends State<ExpandableList> {
             },
           ),
         ),
-        if (isExpanded)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: widget.items
-                .map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      item,
-                      style: TextStyle(fontSize: 14.0),
-                    ),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          height: isExpanded && widget.items != null
+              ? widget.items!.length * 80.0
+              : 0,
+          child: isExpanded && widget.items != null
+              ? AnimationLimiter(
+                  child: ListView.builder(
+                    itemCount: widget.items!.length,
+                    itemBuilder: (context, index) {
+                      final item = widget.items![index];
+                      final isIncome = item.startsWith('+');
+                      final isExpense = item.startsWith('-');
+                      final color = isIncome
+                          ? Colors.green
+                          : (isExpense ? Colors.red : Colors.black);
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: SizedBox(
+                              height: 80.0, // Explicit height for ListTile
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: color.withOpacity(0.3),
+                                  child: Icon(
+                                    isIncome
+                                        ? Icons.add
+                                        : (isExpense
+                                            ? Icons.remove
+                                            : Icons.compare_arrows),
+                                    color: color,
+                                  ),
+                                ),
+                                title: Text(
+                                  item,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: color,
+                                  ),
+                                ),
+                                trailing: SizedBox(
+                                  width: 50, // Adjust the width as needed
+                                  child: Text(
+                                    '\$${item.substring(1)}',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: color,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 )
-                .toList(),
-          ),
+              : SizedBox.shrink(),
+        ),
+        Divider(), // Added Divider to separate ExpandableList widgets visually
       ],
     );
   }
