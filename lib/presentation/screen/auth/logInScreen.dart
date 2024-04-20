@@ -281,11 +281,23 @@ class _LogInScreenState extends State<LogInScreen> {
               await _auth.signInWithCredential(credential);
           final User? user = userCredential.user;
           if (user != null) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/firstTimeLoginForm',
-              (route) => false,
-            );
+            // Check if "Don't Show Again" is true for the user
+            final bool dontShowAgain = await checkDontShowAgain(user.uid);
+            if (dontShowAgain) {
+              // If "Don't Show Again" is true, navigate to student dashboard
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/studentDashboard',
+                (route) => false,
+              );
+            } else {
+              // Otherwise, navigate to first-time login form
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/firstTimeLoginForm',
+                (route) => false,
+              );
+            }
 
             setState(() {
               _isLoading = false; // Hide loading indicator
@@ -304,6 +316,26 @@ class _LogInScreenState extends State<LogInScreen> {
     } catch (error) {
       print(error.toString());
       alertBox(context, 'An error occurred. Please try again later.');
+    }
+  }
+
+  Future<bool> checkDontShowAgain(String uid) async {
+    try {
+      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('RoomChecklist')
+          .doc(uid)
+          .get();
+      if (snapshot.exists) {
+        final Map<String, dynamic>? data =
+            snapshot.data() as Map<String, dynamic>?; // Explicit casting
+        final bool dontShowAgain = data?['dontShowAgain'] ?? false;
+        return dontShowAgain;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print(error.toString());
+      return false;
     }
   }
 

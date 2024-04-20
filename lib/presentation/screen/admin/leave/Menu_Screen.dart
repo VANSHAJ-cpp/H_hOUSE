@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 
 void main() => runApp(MenuScreen());
 
@@ -89,6 +92,12 @@ class _MenuScreenPageState extends State<MenuScreenPage>
               ).then((value) {
                 setState(() {});
               });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf),
+            onPressed: () {
+              _exportMenuAsPdf();
             },
           ),
         ],
@@ -320,5 +329,83 @@ class _MenuScreenPageState extends State<MenuScreenPage>
       'snacks': snacksController.text.split(','),
       'dinner': dinnerController.text.split(','),
     });
+  }
+
+  Future<void> _exportMenuAsPdf() async {
+    final menuSnapshot =
+        await FirebaseFirestore.instance.collection('MenuItems').get();
+
+    final List<Map<String, dynamic>> menuDataList = [];
+
+    menuSnapshot.docs.forEach((doc) {
+      menuDataList.add({
+        'day': doc.id,
+        'breakfast': (doc.data()['breakfast'] as List).join(', '),
+        'lunch': (doc.data()['lunch'] as List).join(', '),
+        'snacks': (doc.data()['snacks'] as List).join(', '),
+        'dinner': (doc.data()['dinner'] as List).join(', '),
+      });
+    });
+
+    await exportPDF(context, menuDataList);
+  }
+
+  Future<void> exportPDF(
+      BuildContext context, List<Map<String, dynamic>> menuDataList) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Container(
+                alignment: pw.Alignment.center,
+                margin: const pw.EdgeInsets.only(bottom: 20),
+                child: pw.Text('Hostel Food Menu',
+                    style: pw.TextStyle(
+                        fontSize: 24, fontWeight: pw.FontWeight.bold)),
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: [
+                  'Day',
+                  'Breakfast',
+                  'Lunch',
+                  'Snacks',
+                  'Dinner',
+                ],
+                data: menuDataList
+                    .map<List<String>>((data) => [
+                          data['day'],
+                          data['breakfast'],
+                          data['lunch'],
+                          data['snacks'],
+                          data['dinner'],
+                        ])
+                    .toList(),
+                border: pw.TableBorder.all(
+                    width: 1, color: const PdfColor.fromInt(0xff000000)),
+                headerStyle: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 12,
+                    color: const PdfColor.fromInt(0xffffffff)),
+                cellAlignment: pw.Alignment.center,
+                cellStyle: const pw.TextStyle(
+                    fontSize: 10, color: PdfColor.fromInt(0xff000000)),
+                headerDecoration:
+                    const pw.BoxDecoration(color: PdfColor.fromInt(0xff000000)),
+                rowDecoration:
+                    const pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff)),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
   }
 }

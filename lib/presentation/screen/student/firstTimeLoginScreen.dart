@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hostelapplication/presentation/screen/student/roomchecklist.dart';
 
 class FirstTimeLoginForm extends StatefulWidget {
   // final String userId;
@@ -49,9 +50,11 @@ class _FirstTimeLoginFormState extends State<FirstTimeLoginForm> {
 
     if (userSnapshot.exists && userSnapshot.data()!['Class'] != null) {
       // "Class" field is available, navigate to student dashboard
-      Navigator.pushReplacementNamed(
+      Navigator.pushReplacement(
         context,
-        '/studentDashboard',
+        MaterialPageRoute(
+          builder: (context) => RoomChecklistScreen(),
+        ),
       );
     }
   }
@@ -121,8 +124,8 @@ class _FirstTimeLoginFormState extends State<FirstTimeLoginForm> {
           key: _formKey,
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   'Welcome to H House!',
                   style: TextStyle(
@@ -318,9 +321,11 @@ class _FirstTimeLoginFormState extends State<FirstTimeLoginForm> {
                         .then((value) {
                       // Data saved successfully
                       // You can navigate to another screen or show a success message
-                      Navigator.pushReplacementNamed(
+                      Navigator.pushReplacement(
                         context,
-                        '/studentDashboard',
+                        MaterialPageRoute(
+                          builder: (context) => RoomChecklistScreen(),
+                        ),
                       );
                     }).catchError((error) {
                       // Handle errors here
