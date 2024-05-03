@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -42,6 +44,7 @@ class StudentDetailsScreen extends StatelessWidget {
                   return StudentCard(
                     firstName: getFieldValue(student.data(), 'FirstName'),
                     lastName: getFieldValue(student.data(), 'Lastname'),
+                    MobileNo: getFieldValue(student.data(), 'MobileNo'),
                     roomNo: getFieldValue(student.data(), 'RoomNo'),
                     fatherName: getFieldValue(student.data(), 'Father Number'),
                     motherName: getFieldValue(student.data(), 'Mother Name'),
@@ -64,6 +67,7 @@ class StudentDetailsScreen extends StatelessWidget {
 class StudentCard extends StatelessWidget {
   final String firstName;
   final String lastName;
+  final String MobileNo;
   final String roomNo;
   final String fatherName;
   final String motherName;
@@ -75,6 +79,7 @@ class StudentCard extends StatelessWidget {
     super.key,
     required this.firstName,
     required this.lastName,
+    required this.MobileNo,
     required this.roomNo,
     required this.fatherName,
     required this.motherName,
@@ -116,6 +121,11 @@ class StudentCard extends StatelessWidget {
                             fontSize: 18,
                             color: Colors.white,
                           ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '$MobileNo',
+                          style: const TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 5),
                         Text(

@@ -606,8 +606,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                                   reverseDuration:
                                                       const Duration(
                                                           milliseconds: 300),
-                                                  child:
-                                                      RoomAvailabilityScreen(),
+                                                  child: RoomScreen(),
                                                 ),
                                                 (r) => false,
                                               );
